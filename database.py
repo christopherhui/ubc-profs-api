@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 import os
 
 # Init app
@@ -11,8 +10,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Init db
 db = SQLAlchemy(app)
-# Init ma
-ma = Marshmallow(app)
 
 association = db.Table('association',
                        db.Column('professor_id', db.Integer, db.ForeignKey('professor.id'),primary_key=True),
@@ -84,20 +81,3 @@ class Stats(db.Model):
     def __repr__(self):
         return f"Stats('{self.average}', '{self.stdev}', '{self.high}', '{self.low}', '{self.passed}', '{self.fail}'," \
             f" '{self.withdrew}', '{self.audit}', '{self.other}')"
-
-# Professor Schema
-class ProfessorSchema(ma.Schema):
-  class Meta:
-    fields = ('id', 'name', 'courses')
-
-# Init schema
-professor_schema = ProfessorSchema(strict=True)
-professors_schema = ProfessorSchema(many=True, strict=True)
-
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
-
-
-if __name__ == '__main__':
-    app.run()
