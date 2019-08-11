@@ -1,20 +1,19 @@
 from flask_restful import Resource, Api
 from flask import jsonify
 import sqlite3
+import re
 from prof_api.api import app
-
-# Todo: Work on using regex to search for professor
 
 class Course(Resource):
     def get(self, professor):
-        q = 'SELECT DISTINCT course.subject ' \
+        query = 'SELECT DISTINCT course.subject ' \
             'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ON course.id = association.course_id ' \
             'WHERE professor.name = ? COLLATE NOCASE;'
 
         conn = sqlite3.connect(app.config['DATABASE_NAME'])
         cur = conn.cursor()
-        new_professor = parse_name(professor)
-        results = cur.execute(q, [new_professor]).fetchall()
+        new_professor = find_name(professor)
+        results = cur.execute(query, [new_professor]).fetchall()
         new_results = [result[0] for result in results]
 
         return jsonify(new_results)
@@ -27,14 +26,21 @@ class Year(Resource):
     def get(self, professor, year):
         pass
 
-def parse_name(professor):
+def find_name(professor):
     """
+    Takes a name from webpage and makes it possible to query in the database
 
-    :param professor: full name of professor
-    :return: parsed version in form of lastname-firstname
+    :param professor: name of professor in dash form
+    :return: name of professor used for querying database and '' if not found
     """
     name = professor.split('-')
-    if len(name) == 1:
-        return name[0]
-    else:
-        return name[0] + ', ' + ' '.join([name[i] for i in range(1, len(name))])
+    query = 'SELECT name FROM professor WHERE name LIKE ?;'
+
+    conn = sqlite3.connect(app.config['DATABASE_NAME'])
+    cur = conn.cursor()
+    all_prof_names = cur.execute(query, ['%{}%'.format(name[0])]).fetchall()
+    for prof_name in all_prof_names:
+        cut_prof_name = re.sub('[-, ]', '', prof_name[0])
+        if cut_prof_name.lower() == ''.join(name).lower():
+            return prof_name[0]
+    return ''
