@@ -17,6 +17,8 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 api = Api(app)
 
 api.add_resource(filters.Course, '/api/courses/<string:professor>')
+api.add_resource(filters.Subject, '/api/subjects/<string:professor>/<string:subject>')
+api.add_resource(filters.Year, '/api/courses/<string:professor>/<string:year>')
 
 @app.route('/', methods=['GET'])
 def hello_world():
