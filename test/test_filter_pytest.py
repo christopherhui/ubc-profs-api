@@ -1,5 +1,5 @@
 import pytest
-from prof_api.api import api, app
+from api import app
 from prof_api.filters import find_name
 
 @pytest.fixture(autouse=True)

@@ -1,5 +1,5 @@
 import requests
-from database import Professor, Course, Grades, Stats, db
+from database.database import Professor, Course, Grades, Stats, db
 
 stats_cat = ['average', 'stdev', 'high', 'low', 'pass', 'fail', 'withdrew', 'audit', 'other']
 grades_cat = ['0-9%', '10-19%', '20-29%', '30-39%', '40-49%', '<50%', '50-54%', '55-59%', '60-63%', '64-67%', '68-71%', '72-75%', '76-79%', '80-84%', '85-89%', '90-100%']

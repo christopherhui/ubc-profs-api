@@ -1,7 +1,7 @@
-from flask_restful import Resource, Api
+from flask_restful import Resource
 from flask import jsonify
 import sqlite3
-from prof_api.api import app
+from api import app
 from helper_functions import find_name
 
 class Course(Resource):
