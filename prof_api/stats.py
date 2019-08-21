@@ -15,10 +15,12 @@ def general_get(professor, add_query='', *options):
     conn = sqlite3.connect(app.config['DATABASE_NAME'])
     conn.row_factory = result_to_json
     cur = conn.cursor()
-    # In the list of arguments, professor must be the first one
     new_professor = find_name(professor)
-    options = [new_professor] + [x for x in options]
-    results = cur.execute(query, options).fetchall()
+    new_options = [new_professor] + [x for x in options if x != 'fetchone']
+    if 'fetchone' in options:
+        results = cur.execute(query, new_options).fetchone()
+    else:
+        results = cur.execute(query, new_options).fetchall()
 
     return jsonify(results)
 
@@ -75,3 +77,18 @@ class courseByYearFilterSubjectSessions(Resource):
         """
         return general_get(professor, 'AND course.year_session = ? AND course.subject = ? AND course.course = ?',
                            year.upper(), subject.upper(), course)
+
+class sessionByYearFilterSubjectSession(Resource):
+    def get(self, professor, year, subject, course, section):
+        """
+        Additonal parameter added in, 'fetchone' to indicate that only
+        session should be returned.
+        :param professor:
+        :param year:
+        :param subject:
+        :param course:
+        :param section:
+        :return:
+        """
+        return general_get(professor, 'AND course.year_session = ? AND course.subject = ? AND course.course = ? AND course.section = ?',
+                           year.upper(), subject.upper(), course, section, 'fetchone')

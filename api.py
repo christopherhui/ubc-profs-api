@@ -23,10 +23,12 @@ api.add_resource(filters.Year, '/api/courses/<string:professor>/<string:year>')
 import prof_api.stats as stats
 
 api.add_resource(stats.allSessions, '/api/stats/<string:professor>')
+api.add_resource(stats.sessionsByYear, '/api/stats/<string:professor>/<string:year>')
+api.add_resource(stats.sessionsByYearFilterSubject, '/api/stats/<string:professor>/<string:year>/<string:subject>')
+api.add_resource(stats.courseByYearFilterSubjectSessions, '/api/stats/<string:professor>/<string:year>/<string:subject>/<string:course>')
+api.add_resource(stats.sessionByYearFilterSubjectSession, '/api/stats/<string:professor>/<string:year>/<string:subject>/<string:course>/<string:section>')
+
 api.add_resource(stats.sessionsBySubject, '/api/stats/subject/<string:professor>/<string:subject>')
-api.add_resource(stats.sessionsByYear, '/api/stats/year/<string:professor>/<string:year>')
-api.add_resource(stats.sessionsByYearFilterSubject, '/api/stats/year/<string:professor>/<string:year>/<string:subject>')
-api.add_resource(stats.courseByYearFilterSubjectSessions, '/api/stats/year/<string:professor>/<string:year>/<string:subject>/<string:course>')
 
 @app.route('/')
 def home():
