@@ -92,3 +92,4 @@ class sessionByYearFilterSubjectSession(Resource):
         """
         return general_get(professor, 'AND course.year_session = ? AND course.subject = ? AND course.course = ? AND course.section = ?',
                            year.upper(), subject.upper(), course, section, 'fetchone')
+
