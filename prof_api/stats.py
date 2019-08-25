@@ -1,28 +1,8 @@
 from flask_restful import Resource
 from flask import jsonify
-import sqlite3
-from api import app
-from helper_functions import find_name, result_to_json
 
-def general_get(professor, add_query='', *options):
-    query = 'SELECT course.*, stats.*, grades.* FROM professor ' \
-            'INNER JOIN association ON professor.id = association.professor_id ' \
-            'INNER JOIN course ON course.id = association.course_id ' \
-            'INNER JOIN stats ON course.id=stats.course_id ' \
-            'INNER JOIN grades ON course.id = grades.course_id ' \
-            'WHERE professor.name = ? ' + add_query
+from helper_functions import general_get, convert_to_general
 
-    conn = sqlite3.connect(app.config['DATABASE_NAME'])
-    conn.row_factory = result_to_json
-    cur = conn.cursor()
-    new_professor = find_name(professor)
-    new_options = [new_professor] + [x for x in options if x != 'fetchone']
-    if 'fetchone' in options:
-        results = cur.execute(query, new_options).fetchone()
-    else:
-        results = cur.execute(query, new_options).fetchall()
-
-    return jsonify(results)
 
 class allSessions(Resource):
     def get(self, professor):
@@ -32,6 +12,7 @@ class allSessions(Resource):
         :return: all sessions that a professor has taught, including grade distributions and statistics
         """
         return general_get(professor)
+
 
 class sessionsBySubject(Resource):
     def get(self, professor, subject):
@@ -43,6 +24,7 @@ class sessionsBySubject(Resource):
         """
         return general_get(professor, 'AND course.subject = ?', subject.upper())
 
+
 class sessionsByYear(Resource):
     def get(self, professor, year):
         """
@@ -52,6 +34,7 @@ class sessionsByYear(Resource):
         :return: all sessions that professor has taught for some year
         """
         return general_get(professor, 'AND course.year_session = ?', year.upper())
+
 
 class sessionsByYearFilterSubject(Resource):
     def get(self, professor, year, subject):
@@ -64,6 +47,7 @@ class sessionsByYearFilterSubject(Resource):
         """
         return general_get(professor, 'AND course.year_session = ? AND course.subject = ?',
                            year.upper(), subject.upper())
+
 
 class courseByYearFilterSubjectSessions(Resource):
     def get(self, professor, year, subject, course):
@@ -78,6 +62,7 @@ class courseByYearFilterSubjectSessions(Resource):
         return general_get(professor, 'AND course.year_session = ? AND course.subject = ? AND course.course = ?',
                            year.upper(), subject.upper(), course)
 
+
 class sessionByYearFilterSubjectSession(Resource):
     def get(self, professor, year, subject, course, section):
         """
@@ -90,6 +75,17 @@ class sessionByYearFilterSubjectSession(Resource):
         :param section:
         :return:
         """
-        return general_get(professor, 'AND course.year_session = ? AND course.subject = ? AND course.course = ? AND course.section = ?',
+        return general_get(professor,
+                           'AND course.year_session = ? AND course.subject = ? AND course.course = ? AND course.section = ?',
                            year.upper(), subject.upper(), course, section, 'fetchone')
 
+
+class generalStatistics(Resource):
+    def get(self, professor):
+        """
+
+        :param professor:
+        :return:
+        """
+        results = general_get(professor).json
+        return jsonify(convert_to_general(results))

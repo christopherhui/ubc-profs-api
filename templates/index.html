@@ -4,11 +4,14 @@
         <title>ProfStats</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='third-party/bootstrap/css/bootstrap.min.css') }}" type="text/css" />
         <link rel="stylesheet" href="{{ url_for('static', filename='third-party/fontawesome/css/fontawesome-all.min.css') }}" type="text/css" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='third-party/chartjs/Chart.min.css') }}" type="text/css" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" type="text/css" />
     </head>
     <body>
         {% block container %}{% endblock %}
         <script src="{{ url_for('static', filename='third-party/jquery/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='third-party/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='third-party/chartjs/Chart.min.js') }}"></script>
         <script src="{{ url_for('static', filename='third-party/js-cookie/js.cookie.js') }}"></script>
     </body>
 </html>
