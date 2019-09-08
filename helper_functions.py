@@ -73,9 +73,9 @@ def general_get(professor, add_query='', *options):
             'WHERE professor.name = ? ' + add_query
 
     conn = sqlite3.connect(app.config['DATABASE_NAME'])
-    conn.row_factory = hf.result_to_json
+    conn.row_factory = result_to_json
     cur = conn.cursor()
-    new_professor = hf.find_name(professor)
+    new_professor = find_name(professor)
     new_options = [new_professor] + [x for x in options if x != 'fetchone']
     if 'fetchone' in options:
         results = cur.execute(query, new_options).fetchone()
@@ -92,6 +92,9 @@ def convert_to_general(json_query):
     :param json_query:
     :return:
     """
+    if len(json_query) == 0:
+        return {}
+
     d = {}
     d["undergrad"] = {}
     d["all"] = {}
@@ -111,21 +114,31 @@ def convert_to_general(json_query):
     for query in json_query:
         grades = query["grades"]
         stats = query["stats"]
-        course_no = int(query["course"])
+
+        # Attempts to find whether or the course has an additional letter at the end
+        # If it does, then we will use the condensed version
+        try:
+            course_no = int(query["course"])
+        except ValueError:
+            course_no = int(query["course"][0:2])
+
         # Check that there are actually statistics for this course before adding values in
         if stats["average"] == "":
             courses_all -= 1
             continue
 
         for grade_bound, grade in grades.items():
-            if grade_bound not in d:
+            if grade_bound not in d["all"]["grades"]:
                 d["all"]["grades"][grade_bound] = grade
-                if course_no < 500:
-                    d["undergrad"]["grades"][grade_bound] = grade
             else:
                 d["all"]["grades"][grade_bound] += grade
-                if course_no < 500:
+
+            if course_no < 500:
+                if grade_bound not in d["undergrad"]["grades"]:
+                    d["undergrad"]["grades"][grade_bound] = grade
+                else:
                     d["undergrad"]["grades"][grade_bound] += grade
+
         if course_no < 500:
             average_undergrad += stats["average"]
             standard_deviation_undergrad += stats["stdev"] ** 2

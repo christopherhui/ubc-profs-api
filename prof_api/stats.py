@@ -66,7 +66,7 @@ class courseByYearFilterSubjectSessions(Resource):
 class sessionByYearFilterSubjectSession(Resource):
     def get(self, professor, year, subject, course, section):
         """
-        Additonal parameter added in, 'fetchone' to indicate that only
+        Additional parameter added in, 'fetchone' to indicate that only
         session should be returned.
         :param professor:
         :param year:
