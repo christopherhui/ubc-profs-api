@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from flask import jsonify
+from flask import jsonify, request
 import sqlite3
 from api import app
 from helper_functions import find_name
@@ -80,3 +80,19 @@ class Professors(Resource):
         new_results = [result[0] for result in results]
 
         return jsonify(new_results)
+
+    def post(self):
+        """
+
+        :return: list of all professor names with wildcard guesses
+        """
+        data = request.json["prof"]
+
+        query = 'SELECT professor.name FROM professor WHERE professor.name LIKE ?' \
+                'ORDER by professor.name'
+
+        conn = sqlite3.connect(app.config['DATABASE_NAME'])
+        cur = conn.cursor()
+        results = cur.execute(query, ['%'+data+'%']).fetchall()
+
+        return jsonify(results)

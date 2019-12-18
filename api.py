@@ -19,6 +19,7 @@ import prof_api.filters as filters
 api.add_resource(filters.Course, '/api/courses/<string:professor>')
 api.add_resource(filters.Subject, '/api/subjects/<string:professor>/<string:subject>')
 api.add_resource(filters.Year, '/api/courses/<string:professor>/<string:year>')
+api.add_resource(filters.Professors, '/api/professors')
 
 import prof_api.stats as stats
 
