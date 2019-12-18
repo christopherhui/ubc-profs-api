@@ -4,22 +4,29 @@
 <head>
     <title>ProfStats</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='third-party/bootstrap/css/bootstrap.min.css') }}"
-        type="text/css" />
+          type="text/css"/>
     <link rel="stylesheet"
-        href="{{ url_for('static', filename='third-party/fontawesome/css/fontawesome-all.min.css') }}"
-        type="text/css" />
+          href="{{ url_for('static', filename='third-party/fontawesome/css/fontawesome-all.min.css') }}"
+          type="text/css"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='third-party/chartjs/Chart.min.css') }}"
-        type="text/css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" type="text/css" />
+          type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" type="text/css"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet"/>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/icons/favicon-16x16.png">
+    <link rel="manifest" href="../static/icons/site.webmanifest">
 </head>
 
 <body>
-    <script src="{{ url_for('static', filename='third-party/jquery/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='third-party/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='third-party/chartjs/Chart.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='third-party/js-cookie/js.cookie.js') }}"></script>
-    {% block container %}{% endblock %}
-    <script src="{{ url_for('static', filename='javascript/home.js') }}"></script>
+<script src="{{ url_for('static', filename='third-party/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='third-party/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='third-party/chartjs/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='third-party/js-cookie/js.cookie.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+{% block container %}{% endblock %}
+<script src="{{ url_for('static', filename='javascript/home.js') }}"></script>
 </body>
 
 </html>

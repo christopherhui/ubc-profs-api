@@ -86,13 +86,23 @@ class Professors(Resource):
 
         :return: list of all professor names with wildcard guesses
         """
-        data = request.json["prof"]
+        prof_name = request.json["prof"]
 
         query = 'SELECT professor.name FROM professor WHERE professor.name LIKE ?' \
                 'ORDER by professor.name'
 
         conn = sqlite3.connect(app.config['DATABASE_NAME'])
         cur = conn.cursor()
-        results = cur.execute(query, ['%'+data+'%']).fetchall()
 
-        return jsonify(results)
+        if len(prof_name.split(' ')) > 1:
+            space_prof_name = prof_name.replace(' ', '%')
+            reversed_prof_name = '%'.join(reversed(prof_name.split(' ')))
+            results1 = cur.execute(query, ['%'+space_prof_name+'%']).fetchall()
+            results2 = cur.execute(query, ['%'+reversed_prof_name+'%']).fetchall()
+
+            return results1 if len(results1) > len(results2) else results2
+
+        else:
+            results = cur.execute(query, ['%'+prof_name+'%']).fetchall()
+
+            return jsonify(results)

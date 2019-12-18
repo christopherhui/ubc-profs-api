@@ -1,4 +1,6 @@
 var ctx = document.getElementById('generalStats');
+var xmlhttp = new XMLHttpRequest();
+
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -36,4 +38,23 @@ var myChart = new Chart(ctx, {
             }]
         }
     }
+});
+
+document.getElementById("search-input-prof").onkeyup = function findResults() {
+    const profInput = document.getElementById("search-input-prof").value;
+    const theUrl = "/api/professors";
+
+    if (profInput.length >= 2) {
+        xmlhttp.open("POST", theUrl);
+        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xmlhttp.send(JSON.stringify({"prof": document.getElementById("search-input-prof").value}));
+
+        xmlhttp.onreadystatechange = function () {
+            console.log(xmlhttp.responseText);
+        };
+    }
+};
+
+$(document).ready(function () {
+    $('.search-input-prof').select2();
 });
