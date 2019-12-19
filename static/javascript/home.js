@@ -43,6 +43,7 @@ var myChart = new Chart(ctx, {
 document.getElementById("search-input-prof").onkeyup = function findResults() {
     const profInput = document.getElementById("search-input-prof").value;
     const theUrl = "/api/professors";
+    $('#result').empty();
 
     if (profInput.length >= 2) {
         xmlhttp.open("POST", theUrl);
@@ -50,11 +51,23 @@ document.getElementById("search-input-prof").onkeyup = function findResults() {
         xmlhttp.send(JSON.stringify({"prof": document.getElementById("search-input-prof").value}));
 
         xmlhttp.onreadystatechange = function () {
-            console.log(xmlhttp.responseText);
+            profsResult = xmlhttp.responseText ? JSON.parse(xmlhttp.responseText) : [];
+            let counter = 0;
+
+            for (prof of profsResult) {
+                if (counter === 5) {
+                    break;
+                }
+                $('#result').append('<li class="list-group-item link-class">' + prof);
+                counter++;
+            }
+            // return xmlhttp.responseText;
         };
     }
 };
 
-$(document).ready(function () {
-    $('.search-input-prof').select2();
+$('#result').on('click', 'li', function () {
+    var click_text = $(this).text().split('|');
+    $('#search-input-prof').val($.trim(click_text[0]));
+    $("#result").html('');
 });
