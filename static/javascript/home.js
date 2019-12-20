@@ -1,5 +1,5 @@
 var ctx = document.getElementById('generalStats');
-var xmlhttp = new XMLHttpRequest();
+var xhr = new XMLHttpRequest();
 
 var myChart = new Chart(ctx, {
     type: 'bar',
@@ -40,29 +40,24 @@ var myChart = new Chart(ctx, {
     }
 });
 
-document.getElementById("search-input-prof").onkeyup = function findResults() {
+document.getElementById("search-input-prof").onkeydown = function findResults() {
+    const xhr = new XMLHttpRequest();
     const profInput = document.getElementById("search-input-prof").value;
     const theUrl = "/api/professors";
     $('#result').empty();
 
     if (profInput.length >= 2) {
-        xmlhttp.open("POST", theUrl);
-        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xmlhttp.send(JSON.stringify({"prof": document.getElementById("search-input-prof").value}));
+        xhr.onload = function () {
+            const profsResult = xhr.responseText ? JSON.parse(xhr.responseText) : [];
 
-        xmlhttp.onreadystatechange = function () {
-            profsResult = xmlhttp.responseText ? JSON.parse(xmlhttp.responseText) : [];
-            let counter = 0;
-
-            for (prof of profsResult) {
-                if (counter === 5) {
-                    break;
-                }
+            for (let prof of profsResult) {
                 $('#result').append('<li class="list-group-item link-class">' + prof);
-                counter++;
             }
-            // return xmlhttp.responseText;
         };
+
+        xhr.open("POST", theUrl);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send(JSON.stringify({"prof": document.getElementById("search-input-prof").value}));
     }
 };
 

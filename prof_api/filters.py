@@ -84,7 +84,7 @@ class Professors(Resource):
     def post(self):
         """
 
-        :return: list of all professor names with wildcard guesses
+        :return: list of all professor names with wildcard guesses, only 5 professors returned maximum
         """
         prof_name = request.json["prof"]
 
@@ -100,9 +100,9 @@ class Professors(Resource):
             results1 = cur.execute(query, ['%'+space_prof_name+'%']).fetchall()
             results2 = cur.execute(query, ['%'+reversed_prof_name+'%']).fetchall()
 
-            return results1 if len(results1) > len(results2) else results2
+            results = results1 if len(results1) > len(results2) else results2
 
         else:
             results = cur.execute(query, ['%'+prof_name+'%']).fetchall()
 
-            return jsonify(results)
+        return jsonify(results) if len(results) <= 5 else jsonify(results[0:5])

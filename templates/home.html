@@ -3,32 +3,24 @@
 {% block container %}
 
     <body style="background-color: white;"></body>
-        <div class="container">
-            <div class="row">
-                <h1 class="display-4">UBC Profs</h1>
-                <p class="lead">Search any UBC professor to get the grade distributions and statistics for each course.</p>
-            </div>
-            <div class="row">
-                <!-- Search form -->
-                <div class="md-form mt-0">
-                    <input class="form-control" id="search-input-prof" type="text" placeholder="Search" aria-label="Search"
-                           autocomplete="off" onkeyup="findResults();">
-                    <ul class="list-group" id="result"></ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <canvas id="generalStats"></canvas>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    test
-                </div>
-                <div class="col">
-                    test1
-                </div>
+    <div class="container">
+        <div class="row">
+            <h1 class="display-4">UBC Profs</h1>
+            <p class="lead">Search any UBC professor to get the grade distributions and statistics for each course.</p>
+        </div>
+        <div class="row">
+            <!-- Search form -->
+            <div class="md-form mt-0">
+                <input class="form-control" id="search-input-prof" type="text" placeholder="Search" aria-label="Search"
+                       autocomplete="off" onkeydown="findResults();">
+                <ul class="list-group" id="result"></ul>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <canvas id="generalStats"></canvas>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
