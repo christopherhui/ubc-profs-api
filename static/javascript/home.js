@@ -4,25 +4,44 @@ var xhr = new XMLHttpRequest();
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: ['0-9%', '10-19%', '20-29%', '30-39%', '40-49%', '50-54%', '55-59%', '60-63%', '64-67%', '68-71%',
+                '72-75%', '76-79%', '80-84%', '85-89%', '90-100%'],
         datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
+            label: 'General Statistics Distribution',
+            data: [],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
             ],
             borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
             ],
             borderWidth: 1
         }]
@@ -39,6 +58,11 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+
+function addProfData(chart, data) {
+    chart.data.datasets[0].data = data;
+    chart.update();
+}
 
 document.getElementById("search-input-prof").onkeydown = function findResults() {
     const xhr = new XMLHttpRequest();
@@ -61,8 +85,35 @@ document.getElementById("search-input-prof").onkeydown = function findResults() 
     }
 };
 
-$('#result').on('click', 'li', function () {
+$('#result').on('click', 'li', function clickOnProfResult() {
     var click_text = $(this).text().split('|');
     $('#search-input-prof').val($.trim(click_text[0]));
     $("#result").html('');
 });
+
+function profSearch() {
+    let profInput = document.getElementById("search-input-prof").value;
+    profInput = profInput.replace(/, /g, '-');
+    profInput = profInput.replace(/ /g, '-');
+    const theUrl = `/api/general-stats/${profInput}`;
+
+    const submit = $.ajax({
+        type: "GET",
+        url: theUrl
+    });
+
+    submit.done(function gotResults(res) {
+        // Undergraduate results for now
+        const underGradRes = res["undergrad"];
+        const underGradGrades = underGradRes["grades"];
+        const data = [underGradGrades["0-9%"], underGradGrades["10-19%"], underGradGrades["20-29%"], underGradGrades["30-39%"],
+                underGradGrades["40-49%"], underGradGrades["50-54%"], underGradGrades["55-59%"], underGradGrades["60-63%"],
+                underGradGrades["64-67%"], underGradGrades["68-71%"], underGradGrades["72-75%"], underGradGrades["76-79%"],
+                underGradGrades["80-84%"], underGradGrades["85-89%"], underGradGrades["90-100%"]];
+        addProfData(myChart, data);
+    });
+
+    submit.fail(function noResult(err) {
+        console.log(err, "Certified Bruh Moment");
+    });
+}

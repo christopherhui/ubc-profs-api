@@ -60,7 +60,7 @@ def general_get(professor, add_query='', *options):
     General function for querying in database for professor and returning
     JSON formatted result
 
-    :param professor:
+    :param professor: In forms of sqlite database name (Last, First)
     :param add_query:
     :param options:
     :return:
@@ -75,8 +75,7 @@ def general_get(professor, add_query='', *options):
     conn = sqlite3.connect(app.config['DATABASE_NAME'])
     conn.row_factory = result_to_json
     cur = conn.cursor()
-    new_professor = find_name(professor)
-    new_options = [new_professor] + [x for x in options if x != 'fetchone']
+    new_options = [professor] + [x for x in options if x != 'fetchone']
     if 'fetchone' in options:
         results = cur.execute(query, new_options).fetchone()
     else:
