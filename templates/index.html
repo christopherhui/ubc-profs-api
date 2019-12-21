@@ -27,6 +27,8 @@
 
             <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.0/dist/latest/bootstrap-autocomplete.min.js"></script>
 
+            {% include 'navbar.html' %}
+
             {% block container %}{% endblock %}
 
             <script src="{{ url_for('static', filename='javascript/home.js') }}"></script>
