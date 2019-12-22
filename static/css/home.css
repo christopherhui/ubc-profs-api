@@ -6,7 +6,45 @@
     color: rebeccapurple;
 }
 
+.card {
+    position: relative;
+    display: flex;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.card-title {
+    padding: .75rem 1.25rem;
+}
+
+.card-text {
+    padding: .75rem 1.25rem;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+#search-prof-form {
+    padding: 0.75em 1.25rem;
+}
+
 #result {
-  cursor: pointer;
-  position: absolute;
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
 }
