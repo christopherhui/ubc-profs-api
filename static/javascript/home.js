@@ -111,6 +111,10 @@ function profSearch() {
                 underGradGrades["64-67%"], underGradGrades["68-71%"], underGradGrades["72-75%"], underGradGrades["76-79%"],
                 underGradGrades["80-84%"], underGradGrades["85-89%"], underGradGrades["90-100%"]];
         addProfData(myChart, data);
+        $("#overall-avg").text(underGradRes["average"].toFixed(2));
+        $("#overall-std").text(underGradRes["stdev"].toFixed(2));
+        $("#overall-median").text(underGradRes["median"].toFixed(2));
+        $("#overall-passed").text(underGradRes["pass"].toFixed(2));
     });
 
     submit.fail(function noResult(err) {
