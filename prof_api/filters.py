@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import jsonify, request
 import sqlite3
 from api import app
-from helper_functions import find_name
+from prof_api.helper_functions import find_name
 
 class Course(Resource):
     def get(self, professor):
@@ -46,22 +46,22 @@ class Subject(Resource):
         return jsonify(new_results)
 
 class Year(Resource):
-    def get(self, professor, year):
+    def get(self, professor, subject, course):
         """
 
         :param professor: professor's name
-        :param year: year session of when a professor has taught
-        :return: all course subjects for a specific year
+        :param year: all course subjects for a specific year with some course
+        :return: all years sessions of when a professor has taught
         """
-        query = 'SELECT DISTINCT course.subject ' \
-                'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
-                'ON course.id = association.course_id ' \
-                'WHERE professor.name = ? AND course.year_session = ? COLLATE NOCASE;'
+        query = 'SELECT DISTINCT course.year_session ' \
+                'FROM professor JOIN association ON professor.id = association.professor_id JOIN course' \
+                'ON course.id = association.course_id' \
+                'WHERE professor.name = ? AND course.subject = ? AND course.course = ?;'
 
         conn = sqlite3.connect(app.config['DATABASE_NAME'])
         cur = conn.cursor()
         new_professor = find_name(professor)
-        results = cur.execute(query, [new_professor, year]).fetchall()
+        results = cur.execute(query, [new_professor, subject, course]).fetchall()
         new_results = [result[0] for result in results]
 
         return jsonify(new_results)

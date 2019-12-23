@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import jsonify, request
 
-from helper_functions import general_get, convert_to_general, find_name
+from prof_api.helper_functions import general_get, convert_to_general_overall, find_name
 
 
 class allSessions(Resource):
@@ -88,7 +88,7 @@ class generalStatistics(Resource):
         :return:
         """
         results = general_get(find_name(professor)).json
-        return jsonify(convert_to_general(results))
+        return jsonify(convert_to_general_overall(results))
 
     def post(self, professor):
         """
@@ -98,4 +98,25 @@ class generalStatistics(Resource):
         """
         prof_name = request.json['prof']
         results = general_get(find_name(prof_name)).json
-        return jsonify(convert_to_general(results))
+        return jsonify(convert_to_general_overall(results))
+
+
+class generalStatisticsSection(Resource):
+    def get(self, professor, subject):
+        results = general_get(find_name(professor), 'AND course.subject = ?', subject.upper()).json
+        return jsonify(convert_to_general_overall(results))
+
+
+class generalStatisticsSectionCourse(Resource):
+    def get(self, professor, subject, course):
+        results = general_get(find_name(professor),
+                              'AND course.subject = ? AND course.course = ?', subject.upper(), course).json
+        return jsonify(convert_to_general_overall(results))
+
+
+class generalStatisticsSectionCourseYear(Resource):
+    def get(self, professor, subject, course, year):
+        results = general_get(find_name(professor),
+                              'AND course.subject = ? AND course.course = ? AND course.year_session = ?',
+                              subject.upper(), course, year.upper()).json
+        return jsonify(convert_to_general_overall(results))

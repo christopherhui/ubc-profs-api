@@ -18,7 +18,7 @@ import prof_api.filters as filters
 
 api.add_resource(filters.Course, '/api/courses/<string:professor>')
 api.add_resource(filters.Subject, '/api/subjects/<string:professor>/<string:subject>')
-api.add_resource(filters.Year, '/api/courses/<string:professor>/<string:year>')
+api.add_resource(filters.Year, '/api/courses/<string:professor>/<string:subject>/<string:course>')
 api.add_resource(filters.Professors, '/api/professors')
 
 import prof_api.stats as stats
@@ -35,3 +35,7 @@ api.add_resource(stats.sessionsBySubject, '/api/stats/subject/<string:professor>
 @app.route('/')
 def home():
     return flask.render_template('home.html')
+
+@app.route('/courses')
+def courses():
+    return flask.render_template('courses.html')

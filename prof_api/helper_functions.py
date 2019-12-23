@@ -116,7 +116,7 @@ def general_get(professor, add_query='', *options):
     return jsonify(results)
 
 
-def convert_to_general(json_query):
+def convert_to_general_overall(json_query):
     """
     Given a JSON query, typically with multiple courses, returns the
     general statistics of all courses under which the JSON query contains
@@ -172,14 +172,14 @@ def convert_to_general(json_query):
 
 def calculate_all_to_json(all_arr, d, pass_ratio_all):
     d['all']['average'] = statistics.mean(all_arr)
-    d['all']['stdev'] = statistics.stdev(all_arr)
+    d['all']['stdev'] = statistics.stdev(all_arr) if len(all_arr) >= 2 else 0.00
     d['all']['median'] = statistics.median(all_arr)
     d['all']['pass'] = statistics.mean(pass_ratio_all)
 
 
 def calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr):
     d['undergrad']['average'] = statistics.mean(undergrad_arr)
-    d['undergrad']['stdev'] = statistics.stdev(undergrad_arr)
+    d['undergrad']['stdev'] = statistics.stdev(undergrad_arr) if len(undergrad_arr) >= 2 else 0.00
     d['undergrad']['median'] = statistics.median(undergrad_arr)
     d['undergrad']['pass'] = statistics.mean(pass_ratio_undergrad)
 
