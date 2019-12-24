@@ -34,6 +34,7 @@ api.add_resource(stats.generalStatistics, '/api/general-stats/<string:professor>
 api.add_resource(stats.generalStatisticsSubject, '/api/general-stats/<string:professor>/<string:subject>')
 api.add_resource(stats.generalStatisticsSubjectCourse, '/api/general-stats/<string:professor>/<string:subject>/<string:course>')
 api.add_resource(stats.generalStatisticsSubjectCourseYear, '/api/general-stats/<string:professor>/<string:subject>/<string:course>/<string:year>')
+api.add_resource(stats.generalStatisticsSubjectCourseYearSection, '/api/general-stats/<string:professor>/<string:subject>/<string:course>/<string:year>/<string:section>')
 
 api.add_resource(stats.sessionsBySubject, '/api/stats/subject/<string:professor>/<string:subject>')
 

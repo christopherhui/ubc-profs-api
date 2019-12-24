@@ -109,7 +109,7 @@
                         <!-- Search form -->
                         <div class="col-lg-5 mb-3">
                             <div class="md-form">
-                                <form id="search-prof-form" onsubmit="profSearch();return false;">
+                                <form id="search-prof-form" onsubmit="profSearchCustom();return false;">
                                     <div class="input-group">
                                         <input class="form-control" id="search-input-prof" type="text"
                                                placeholder="Search Professor"
@@ -131,13 +131,9 @@
                             <div class="dropdown no-arrow mb-4">
                                 <button class="btn btn-secondary dropdown-toggle" type="button"
                                         id="dropdownMenuButtonSubject" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                    Dropdown (no arrow)
-                                </button>
+                                        aria-expanded="false">All</button>
                                 <div class="dropdown-menu" id="subject-dropdown" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" href="javascript:void(0)">All</a>
                                 </div>
                             </div>
                         </div>
@@ -146,13 +142,9 @@
                             <div class="dropdown no-arrow mb-4">
                                 <button class="btn btn-secondary dropdown-toggle" type="button"
                                         id="dropdownMenuButtonCourse" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                    Dropdown (no arrow)
-                                </button>
+                                        aria-expanded="false">All</button>
                                 <div class="dropdown-menu" id="course-dropdown" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" href="javascript:void(0)">All</a>
                                 </div>
                             </div>
                         </div>
@@ -161,13 +153,20 @@
                             <div class="dropdown no-arrow mb-4">
                                 <button class="btn btn-secondary dropdown-toggle" type="button"
                                         id="dropdownMenuButtonYear" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                    Dropdown (no arrow)
-                                </button>
+                                        aria-expanded="false">All</button>
                                 <div class="dropdown-menu" id="year-dropdown" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" href="javascript:void(0)">All</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-auto">
+                            <p class="title-dropdown">Section:</p>
+                            <div class="dropdown no-arrow mb-4">
+                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                        id="dropdownMenuButtonSection" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">All</button>
+                                <div class="dropdown-menu" id="section-dropdown" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="javascript:void(0)">All</a>
                                 </div>
                             </div>
                         </div>

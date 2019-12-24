@@ -81,9 +81,9 @@ class Section(Resource):
         :param year:
         :return: all years sessions of when a professor has taught
         """
-        query = 'SELECT DISTINCT course.section' \
-                'FROM professor JOIN association ON professor.id = association.professor_id JOIN course' \
-                'ON course.id = association.course_id' \
+        query = 'SELECT DISTINCT course.section ' \
+                'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
+                'ON course.id = association.course_id ' \
                 'WHERE professor.name = ? AND course.subject = ? AND course.course = ? AND course.year_session = ?;'
 
         conn = sqlite3.connect(app.config['DATABASE_NAME'])

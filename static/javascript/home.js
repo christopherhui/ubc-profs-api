@@ -111,17 +111,21 @@ $('#result').on('click', 'li', function clickOnProfResult() {
 });
 
 function profSearch() {
-    let profInput = document.getElementById("search-input-prof").value;
+    let profInput = $('#search-input-prof').val();
     profInput = formatProfName(profInput);
     const theUrl = `/api/general-stats/${profInput}`;
+    search(theUrl);
+}
 
+// Todo: #overall-* is used in many html files, and this function can be used many times, any refactoring required?
+function search(theUrl) {
     const submit = $.ajax({
         type: "GET",
         url: theUrl
     });
 
     submit.done(function gotResults(res) {
-        // Undergraduate results for now
+        // Todo: Undergraduate results for now
         const underGradRes = res["undergrad"];
         const underGradGrades = underGradRes["grades"];
         const data = [underGradGrades["0-9%"], underGradGrades["10-19%"], underGradGrades["20-29%"], underGradGrades["30-39%"],

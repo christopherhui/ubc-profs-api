@@ -150,7 +150,7 @@ def convert_to_general_overall(json_query):
         try:
             course_no = int(query['course'])
         except ValueError:
-            course_no = int(query['course'][0:2])
+            course_no = int(query['course'][0:3])
 
         # Check that there are actually statistics for this course before adding values in
         if stats['average'] == '':

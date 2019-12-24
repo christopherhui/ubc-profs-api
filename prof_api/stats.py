@@ -120,3 +120,10 @@ class generalStatisticsSubjectCourseYear(Resource):
                               'AND course.subject = ? AND course.course = ? AND course.year_session = ?',
                               subject.upper(), course, year.upper()).json
         return jsonify(convert_to_general_overall(results))
+
+class generalStatisticsSubjectCourseYearSection(Resource):
+    def get(self, professor, subject, course, year, section):
+        results = general_get(find_name(professor),
+                              'AND course.subject = ? AND course.course = ? AND course.year_session = ? AND course.section = ?',
+                              subject.upper(), course, year.upper(), section).json
+        return jsonify(convert_to_general_overall(results))
