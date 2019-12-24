@@ -45,3 +45,7 @@ def home():
 @app.route('/courses')
 def courses():
     return flask.render_template('courses.html')
+
+@app.errorhandler(404)
+def not_found(e):
+    return flask.render_template('404.html')
