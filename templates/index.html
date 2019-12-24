@@ -27,12 +27,13 @@
 
 <body>
 <script src="{{ url_for('static', filename='third-party/jquery/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='third-party/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='third-party/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='third-party/chartjs/Chart.min.js') }}"></script>
 <script src="{{ url_for('static', filename='third-party/js-cookie/js.cookie.js') }}"></script>
 
 {% block container %}{% endblock %}
 
+<script src="{{ url_for('static', filename='javascript/courses.js') }}"></script>
 <script src="{{ url_for('static', filename='javascript/home.js') }}"></script>
 <script src="{{ url_for('static', filename='javascript/sb-admin-2.min.js') }}"></script>
 
