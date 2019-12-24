@@ -35,12 +35,12 @@ class Subject(Resource):
         query = 'SELECT DISTINCT course.course ' \
             'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
                 'ON course.id = association.course_id ' \
-                'WHERE professor.name = ? AND course.subject = ? COLLATE NOCASE;'
+                'WHERE professor.name = ? AND course.subject = ?;'
 
         conn = sqlite3.connect(app.config['DATABASE_NAME'])
         cur = conn.cursor()
         new_professor = find_name(professor)
-        results = cur.execute(query, [new_professor, subject]).fetchall()
+        results = cur.execute(query, [new_professor, subject.upper()]).fetchall()
         new_results = [result[0] for result in results]
 
         return jsonify(new_results)
@@ -54,14 +54,14 @@ class Year(Resource):
         :return: all years sessions of when a professor has taught
         """
         query = 'SELECT DISTINCT course.year_session ' \
-                'FROM professor JOIN association ON professor.id = association.professor_id JOIN course' \
-                'ON course.id = association.course_id' \
+                'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
+                'ON course.id = association.course_id ' \
                 'WHERE professor.name = ? AND course.subject = ? AND course.course = ?;'
 
         conn = sqlite3.connect(app.config['DATABASE_NAME'])
         cur = conn.cursor()
         new_professor = find_name(professor)
-        results = cur.execute(query, [new_professor, subject, course]).fetchall()
+        results = cur.execute(query, [new_professor, subject.upper(), course]).fetchall()
         new_results = [result[0] for result in results]
 
         return jsonify(new_results)

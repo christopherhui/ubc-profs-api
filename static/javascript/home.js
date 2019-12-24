@@ -1,11 +1,10 @@
 var ctx = document.getElementById('generalStats');
-var xhr = new XMLHttpRequest();
 
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
         labels: ['0-9%', '10-19%', '20-29%', '30-39%', '40-49%', '50-54%', '55-59%', '60-63%', '64-67%', '68-71%',
-                '72-75%', '76-79%', '80-84%', '85-89%', '90-100%'],
+            '72-75%', '76-79%', '80-84%', '85-89%', '90-100%'],
         datasets: [{
             label: 'General Statistics Distribution',
             data: [],
@@ -75,7 +74,7 @@ document.getElementById("search-input-prof").onkeydown = function findResults() 
             const profsResult = xhr.responseText ? JSON.parse(xhr.responseText) : [];
 
             for (let prof of profsResult) {
-                $('#result').append('<li class="list-group-item link-class">' + prof);
+                $('#result').append('<li class="list-group-item link-class" id="prof-name">' + prof);
             }
         };
 
@@ -85,16 +84,35 @@ document.getElementById("search-input-prof").onkeydown = function findResults() 
     }
 };
 
+
 $('#result').on('click', 'li', function clickOnProfResult() {
     var click_text = $(this).text().split('|');
     $('#search-input-prof').val($.trim(click_text[0]));
     $("#result").html('');
+
+    let profInput = click_text[0];
+    profInput = formatProfName(profInput);
+
+    const submit = $.ajax({
+        type: "GET",
+        url: `/api/courses/${profInput}`
+    });
+
+    submit.done(function getAllSubjects(res) {
+        $('#subject-dropdown').empty();
+        for (let subject of res) {
+            $('#subject-dropdown').append('<a class="dropdown-item subject-item" href="javascript:void(0)">' + subject + '</a>')
+        }
+    });
+
+    submit.fail(function failed(msg) {
+        console.log(msg, "Bruh... What did you do?")
+    })
 });
 
 function profSearch() {
     let profInput = document.getElementById("search-input-prof").value;
-    profInput = profInput.replace(/, /g, '-');
-    profInput = profInput.replace(/ /g, '-');
+    profInput = formatProfName(profInput);
     const theUrl = `/api/general-stats/${profInput}`;
 
     const submit = $.ajax({
@@ -107,9 +125,9 @@ function profSearch() {
         const underGradRes = res["undergrad"];
         const underGradGrades = underGradRes["grades"];
         const data = [underGradGrades["0-9%"], underGradGrades["10-19%"], underGradGrades["20-29%"], underGradGrades["30-39%"],
-                underGradGrades["40-49%"], underGradGrades["50-54%"], underGradGrades["55-59%"], underGradGrades["60-63%"],
-                underGradGrades["64-67%"], underGradGrades["68-71%"], underGradGrades["72-75%"], underGradGrades["76-79%"],
-                underGradGrades["80-84%"], underGradGrades["85-89%"], underGradGrades["90-100%"]];
+            underGradGrades["40-49%"], underGradGrades["50-54%"], underGradGrades["55-59%"], underGradGrades["60-63%"],
+            underGradGrades["64-67%"], underGradGrades["68-71%"], underGradGrades["72-75%"], underGradGrades["76-79%"],
+            underGradGrades["80-84%"], underGradGrades["85-89%"], underGradGrades["90-100%"]];
         addProfData(myChart, data);
         $("#overall-avg").text(underGradRes["average"].toFixed(2));
         $("#overall-std").text(underGradRes["stdev"].toFixed(2));

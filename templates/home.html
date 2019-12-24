@@ -9,7 +9,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -107,18 +107,21 @@
 
                     <div class="row">
                         <!-- Search form -->
-                        <div class="md-form">
-                            <form id="search-prof-form" onsubmit="profSearch();return false;">
-                                <div class="input-group">
-                                    <input class="form-control" id="search-input-prof" type="text"
-                                           placeholder="Search Professor"
-                                           aria-label="Search" autocomplete="off" onkeydown="findResults();"/>
-                                    <div class="input-group-btn">
-                                        <input type="submit" value="Search" id="search-prof" class="btn btn-default"/>
+                        <div class="col-lg-5 mb-3">
+                            <div class="md-form">
+                                <form id="search-prof-form" onsubmit="profSearch();return false;">
+                                    <div class="input-group">
+                                        <input class="form-control" id="search-input-prof" type="text"
+                                               placeholder="Search Professor"
+                                               aria-label="Search" autocomplete="off" onkeydown="findResults();"/>
+                                        <div class="input-group-btn">
+                                            <input type="submit" value="Search" id="search-prof"
+                                                   class="btn btn-default"/>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
-                            <ul class="list-group" id="result"></ul>
+                                </form>
+                                <ul class="list-group" id="result"></ul>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
