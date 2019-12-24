@@ -4,6 +4,7 @@ import sqlite3
 from api import app
 from prof_api.helper_functions import find_name
 
+
 class Course(Resource):
     def get(self, professor):
         """
@@ -12,7 +13,7 @@ class Course(Resource):
         :return: all courses a professor has taught
         """
         query = 'SELECT DISTINCT course.subject ' \
-            'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
+                'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
                 'ON course.id = association.course_id ' \
                 'WHERE professor.name = ? COLLATE NOCASE;'
 
@@ -24,6 +25,7 @@ class Course(Resource):
 
         return jsonify(new_results)
 
+
 class Subject(Resource):
     def get(self, professor, subject):
         """
@@ -33,7 +35,7 @@ class Subject(Resource):
         :return: subject of a course (i.e. 100, 320)
         """
         query = 'SELECT DISTINCT course.course ' \
-            'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
+                'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
                 'ON course.id = association.course_id ' \
                 'WHERE professor.name = ? AND course.subject = ?;'
 
@@ -45,12 +47,14 @@ class Subject(Resource):
 
         return jsonify(new_results)
 
+
 class Year(Resource):
     def get(self, professor, subject, course):
         """
 
         :param professor: professor's name
-        :param year: all course subjects for a specific year with some course
+        :param subject:
+        :param course:
         :return: all years sessions of when a professor has taught
         """
         query = 'SELECT DISTINCT course.year_session ' \
@@ -62,6 +66,30 @@ class Year(Resource):
         cur = conn.cursor()
         new_professor = find_name(professor)
         results = cur.execute(query, [new_professor, subject.upper(), course]).fetchall()
+        new_results = [result[0] for result in results]
+
+        return jsonify(new_results)
+
+
+class Section(Resource):
+    def get(self, professor, subject, course, year):
+        """
+
+        :param professor: professor's name
+        :param subject:
+        :param course:
+        :param year:
+        :return: all years sessions of when a professor has taught
+        """
+        query = 'SELECT DISTINCT course.section' \
+                'FROM professor JOIN association ON professor.id = association.professor_id JOIN course' \
+                'ON course.id = association.course_id' \
+                'WHERE professor.name = ? AND course.subject = ? AND course.course = ? AND course.year_session = ?;'
+
+        conn = sqlite3.connect(app.config['DATABASE_NAME'])
+        cur = conn.cursor()
+        new_professor = find_name(professor)
+        results = cur.execute(query, [new_professor, subject.upper(), course, year]).fetchall()
         new_results = [result[0] for result in results]
 
         return jsonify(new_results)
@@ -97,12 +125,12 @@ class Professors(Resource):
         if len(prof_name.split(' ')) > 1:
             space_prof_name = prof_name.replace(' ', '%')
             reversed_prof_name = '%'.join(reversed(prof_name.split(' ')))
-            results1 = cur.execute(query, ['%'+space_prof_name+'%']).fetchall()
-            results2 = cur.execute(query, ['%'+reversed_prof_name+'%']).fetchall()
+            results1 = cur.execute(query, ['%' + space_prof_name + '%']).fetchall()
+            results2 = cur.execute(query, ['%' + reversed_prof_name + '%']).fetchall()
 
             results = results1 if len(results1) > len(results2) else results2
 
         else:
-            results = cur.execute(query, ['%'+prof_name+'%']).fetchall()
+            results = cur.execute(query, ['%' + prof_name + '%']).fetchall()
 
         return jsonify(results) if len(results) <= 5 else jsonify(results[0:5])
