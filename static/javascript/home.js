@@ -89,6 +89,11 @@ $('#result').on('click', 'li', function clickOnProfResult() {
     var click_text = $(this).text().split('|');
     $('#search-input-prof').val($.trim(click_text[0]));
     $("#result").html('');
+    $('#dropdownMenuButtonSubject').text('All');
+
+    clearCourse();
+    clearYear();
+    clearSection();
 
     let profInput = click_text[0];
     profInput = formatProfName(profInput);
@@ -99,9 +104,11 @@ $('#result').on('click', 'li', function clickOnProfResult() {
     });
 
     submit.done(function getAllSubjects(res) {
-        $('#subject-dropdown').empty();
+        const subject_dropdown = $('#subject-dropdown');
+        subject_dropdown.empty();
+        subject_dropdown.append('<a class="dropdown-item" href="javascript:void(0)">All</a>');
         for (let subject of res) {
-            $('#subject-dropdown').append('<a class="dropdown-item subject-item" href="javascript:void(0)">' + subject + '</a>')
+            subject_dropdown.append('<a class="dropdown-item subject-item" href="javascript:void(0)">' + subject + '</a>')
         }
     });
 

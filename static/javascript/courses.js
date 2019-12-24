@@ -27,9 +27,34 @@ function profSearchCustom() {
     }
 }
 
+function clearCourse() {
+    $('#dropdownMenuButtonCourse').text('All');
+    const course = $('#course-dropdown');
+    course.empty();
+    course.append('<a class="dropdown-item" href="javascript:void(0)">All</a>');
+}
+
+function clearYear() {
+    $('#dropdownMenuButtonYear').text('All');
+    const year = $('#year-dropdown');
+    year.empty();
+    year.append('<a class="dropdown-item" href="javascript:void(0)">All</a>')
+}
+
+function clearSection() {
+    $('#dropdownMenuButtonSection').text('All');
+    const section = $('#section-dropdown');
+    section.empty();
+    section.append('<a class="dropdown-item" href="javascript:void(0)">All</a>')
+}
+
 $('#subject-dropdown').on('click', 'a', function clickOnSubjectResult() {
     let prof = $('#search-input-prof').val();
     prof = formatProfName(prof);
+
+    clearCourse();
+    clearYear();
+    clearSection();
 
     const click_text = $(this).text().split('|');
     $('#dropdownMenuButtonSubject').text(click_text[0]);
@@ -41,8 +66,6 @@ $('#subject-dropdown').on('click', 'a', function clickOnSubjectResult() {
 
     submit.done(function getAllYears(res) {
         const course_dropdown = $('#course-dropdown');
-        course_dropdown.empty();
-        course_dropdown.append('<a class="dropdown-item" href="javascript:void(0)">All</a>');
         for (let course of res) {
             course_dropdown.append('<a class="dropdown-item" href="javascript:void(0)">' + course + '</a>')
         }
@@ -58,6 +81,9 @@ $('#course-dropdown').on('click', 'a', function clickOnSubjectResult() {
     prof = formatProfName(prof);
     const subject = $('#dropdownMenuButtonSubject').text();
 
+    clearYear();
+    clearSection();
+
     const click_text = $(this).text().split('|');
     $('#dropdownMenuButtonCourse').text(click_text[0]);
 
@@ -68,8 +94,6 @@ $('#course-dropdown').on('click', 'a', function clickOnSubjectResult() {
 
     submit.done(function getAllYears(res) {
         const year_dropdown = $('#year-dropdown');
-        year_dropdown.empty();
-        year_dropdown.append('<a class="dropdown-item" href="javascript:void(0)">All</a>');
         for (let year of res) {
             year_dropdown.append('<a class="dropdown-item" href="javascript:void(0)">' + year + '</a>')
         }
@@ -86,6 +110,8 @@ $('#year-dropdown').on('click', 'a', function clickOnSubjectResult() {
     const subject = $('#dropdownMenuButtonSubject').text();
     const course = $('#dropdownMenuButtonCourse').text();
 
+    clearSection();
+
     const click_text = $(this).text().split('|');
     $('#dropdownMenuButtonYear').text(click_text[0]);
 
@@ -96,8 +122,6 @@ $('#year-dropdown').on('click', 'a', function clickOnSubjectResult() {
 
     submit.done(function getAllSections(res) {
         const section_dropdown = $('#section-dropdown');
-        section_dropdown.empty();
-        section_dropdown.append('<a class="dropdown-item" href="javascript:void(0)">All</a>');
         for (let section of res) {
             section_dropdown.append('<a class="dropdown-item" href="javascript:void(0)">' + section + '</a>')
         }
