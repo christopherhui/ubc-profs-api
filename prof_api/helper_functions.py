@@ -164,10 +164,20 @@ def get_statistics(d, professor, json_query):
     highcourseU = ''
     highyearU = ''
 
+    lowavgU = 100
+    lowsubjectU = ''
+    lowcourseU = ''
+    lowyearU = ''
+
     highavgA = 0
     highsubjectA = ''
     highcourseA = ''
     highyearA = ''
+
+    lowavgA = 100
+    lowsubjectA = ''
+    lowcourseA = ''
+    lowyearA = ''
 
     for val in values:
         subject = val['subject']
@@ -194,6 +204,12 @@ def get_statistics(d, professor, json_query):
                 highcourseU = course
                 highyearU = year
 
+            if avg < lowavgU:
+                lowavgU = avg
+                lowsubjectU = subject
+                lowcourseU = course
+                lowyearU = year
+
             countU += val['enrolled']
             yearsU.add(year)
             taughtU.add(subject)
@@ -204,11 +220,21 @@ def get_statistics(d, professor, json_query):
             highcourseA = course
             highyearA = year
 
+        if avg < lowavgA:
+            lowavgA = avg
+            lowsubjectA = subject
+            lowcourseA = course
+            lowyearA = year
+
     d['stats']['undergrad'] = {
         'avg_high': highavgU,
         'subject_high': highsubjectU,
         'course_high': highcourseU,
         'year_high': highyearU,
+        'avg_low': lowavgU,
+        'subject_low': lowsubjectU,
+        'course_low': lowcourseU,
+        'year_low': lowyearU,
         'count': countU,
         'years_taught': list(yearsU),
         'subjects_taught': list(taughtU)
@@ -218,6 +244,10 @@ def get_statistics(d, professor, json_query):
         'subject_high': highsubjectA,
         'course_high': highcourseA,
         'year_high': highyearA,
+        'avg_low': lowavgA,
+        'subject_low': lowsubjectA,
+        'course_low': lowcourseA,
+        'year_low': lowyearA,
         'count': countA,
         'years_taught': list(yearsA),
         'subjects_taught': list(taughtA)

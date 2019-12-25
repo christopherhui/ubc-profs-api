@@ -172,6 +172,7 @@ function changeToUndergrad() {
     $("#students-taught").text(underGradStats["count"]);
     $("#subjects-taught").text(underGradStats["subjects_taught"].join(", "));
     $("#highest-course-average").text(`${underGradStats["avg_high"]}, (${underGradStats["subject_high"]}${underGradStats["course_high"]}, ${underGradStats["year_high"]})`);
+    $("#lowest-course-average").text(`${underGradStats["avg_low"]}, (${underGradStats["subject_low"]}${underGradStats["course_low"]}, ${underGradStats["year_low"]})`);
 }
 
 function changeToAll() {
@@ -193,4 +194,5 @@ function changeToAll() {
     $("#students-taught").text(allStats["count"]);
     $("#subjects-taught").text(allStats["subjects_taught"].join(", "));
     $("#highest-course-average").text(`${allStats["avg_high"]}, (${allStats["subject_high"]}${allStats["course_high"]}, ${allStats["year_high"]})`);
+    $("#lowest-course-average").text(`${allStats["avg_low"]}, (${allStats["subject_low"]}${allStats["course_low"]}, ${allStats["year_low"]})`);
 }
