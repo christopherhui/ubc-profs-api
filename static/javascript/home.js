@@ -121,7 +121,7 @@ $('#result').on('click', 'li', function clickOnProfResult() {
 function profSearch() {
     let profInput = $('#search-input-prof').val();
     profInput = formatProfName(profInput);
-    const theUrl = `/api/general-stats/${profInput}`;
+    const theUrl = `/api/general-stats-verbose/${profInput}`;
     search(theUrl);
 }
 
@@ -145,21 +145,29 @@ function search(theUrl) {
 function changeToUndergrad() {
     const underGradRes = stats["undergrad"];
     const underGradGrades = underGradRes["grades"];
+    const underGradStats = stats["stats"]["undergrad"];
     const data = [underGradGrades["0-9%"], underGradGrades["10-19%"], underGradGrades["20-29%"], underGradGrades["30-39%"],
         underGradGrades["40-49%"], underGradGrades["50-54%"], underGradGrades["55-59%"], underGradGrades["60-63%"],
         underGradGrades["64-67%"], underGradGrades["68-71%"], underGradGrades["72-75%"], underGradGrades["76-79%"],
         underGradGrades["80-84%"], underGradGrades["85-89%"], underGradGrades["90-100%"]];
+
     addProfData(myChart, data);
     $("#overall-avg").text(underGradRes["average"].toFixed(2));
     $("#overall-std").text(underGradRes["stdev"].toFixed(2));
     $("#overall-median").text(underGradRes["median"].toFixed(2));
     $("#overall-passed").text(underGradRes["pass"].toFixed(2));
-    $("#home-graph").text("Undergraduate Grade Distribution")
+    $("#home-graph").text("Undergraduate Grade Distribution");
+
+    $("#prof-name").text(stats["stats"]["name"]);
+    $("#students-taught").text(underGradStats["count"]);
+    $("#subjects-taught").text(underGradStats["subjects_taught"].join(", "));
+    $("#highest-course-average").text(`${underGradStats["avg_high"]}, (${underGradStats["subject_high"]}${underGradStats["course_high"]}, ${underGradStats["year_high"]})`);
 }
 
 function changeToAll() {
     const allRes = stats["all"];
     const allGrades = allRes["grades"];
+    const allStats = stats["stats"]["all"];
     const data = [allGrades["0-9%"], allGrades["10-19%"], allGrades["20-29%"], allGrades["30-39%"],
         allGrades["40-49%"], allGrades["50-54%"], allGrades["55-59%"], allGrades["60-63%"],
         allGrades["64-67%"], allGrades["68-71%"], allGrades["72-75%"], allGrades["76-79%"],
@@ -169,5 +177,10 @@ function changeToAll() {
     $("#overall-std").text(allRes["stdev"].toFixed(2));
     $("#overall-median").text(allRes["median"].toFixed(2));
     $("#overall-passed").text(allRes["pass"].toFixed(2));
-    $("#home-graph").text("Overall Grade Distribution")
+    $("#home-graph").text("Overall Grade Distribution");
+
+    $("#prof-name").text(stats["stats"]["name"]);
+    $("#students-taught").text(allStats["count"]);
+    $("#subjects-taught").text(allStats["subjects_taught"].join(", "));
+    $("#highest-course-average").text(`${allStats["avg_high"]}, (${allStats["subject_high"]}${allStats["course_high"]}, ${allStats["year_high"]})`);
 }

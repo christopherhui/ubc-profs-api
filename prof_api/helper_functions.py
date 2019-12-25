@@ -146,7 +146,7 @@ def add_grade_values(course_no, d, grades):
 def get_statistics(d, professor):
     values = general_get(find_name(professor)).json
     d['stats'] = {}
-    d['stats']['name'] = professor
+    d['stats']['name'] = find_name(professor)
 
     yearsU = set()
     yearsA = set()
@@ -172,10 +172,18 @@ def get_statistics(d, professor):
         course = val['course']
         year = val['year_session']
         avg = val['stats']['average']
+
         try:
             course_no = int(course)
         except ValueError:
-            course_no = int(course)
+            course_no = int(course[0:3])
+
+        countA += val['enrolled']
+        yearsA.add(year)
+        taughtA.add(subject)
+
+        if avg == '':
+            continue
 
         if course_no < 500:
             if avg > highavgU:
@@ -194,10 +202,6 @@ def get_statistics(d, professor):
             highcourseA = course
             highyearA = year
 
-        countA += val['enrolled']
-        yearsA.add(year)
-        taughtA.add(subject)
-
     d['stats']['undergrad'] = {
         'avg_high': highavgU,
         'subject_high': highsubjectU,
@@ -205,16 +209,16 @@ def get_statistics(d, professor):
         'year_high': highyearU,
         'count': countU,
         'years_taught': list(yearsU),
-        'subject_taught': list(taughtU)
+        'subjects_taught': list(taughtU)
     }
-    d['stats']['grad'] = {
+    d['stats']['all'] = {
         'avg_high': highavgA,
         'subject_high': highsubjectA,
         'course_high': highcourseA,
         'year_high': highyearA,
         'count': countA,
         'years_taught': list(yearsA),
-        'subject_taught': list(taughtA)
+        'subjects_taught': list(taughtA)
     }
     return d
 
