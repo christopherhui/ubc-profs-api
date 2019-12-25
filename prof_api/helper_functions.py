@@ -4,7 +4,6 @@ import re
 import statistics
 
 from flask import jsonify
-
 from api import app
 
 stats_cat = ['average', 'stdev', 'high', 'low', 'passed', 'fail', 'withdrew', 'audit', 'other']
@@ -116,6 +115,110 @@ def general_get(professor, add_query='', *options):
     return jsonify(results)
 
 
+def calculate_all_to_json(all_arr, d, pass_ratio_all):
+    d['all']['average'] = statistics.mean(all_arr)
+    d['all']['stdev'] = statistics.stdev(all_arr) if len(all_arr) >= 2 else 0.00
+    d['all']['median'] = statistics.median(all_arr)
+    d['all']['pass'] = statistics.mean(pass_ratio_all)
+
+
+def calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr):
+    d['undergrad']['average'] = statistics.mean(undergrad_arr)
+    d['undergrad']['stdev'] = statistics.stdev(undergrad_arr) if len(undergrad_arr) >= 2 else 0.00
+    d['undergrad']['median'] = statistics.median(undergrad_arr)
+    d['undergrad']['pass'] = statistics.mean(pass_ratio_undergrad)
+
+
+def add_grade_values(course_no, d, grades):
+    for grade_bound, grade in grades.items():
+        if grade_bound not in d['all']['grades']:
+            d['all']['grades'][grade_bound] = grade
+        else:
+            d['all']['grades'][grade_bound] += grade
+
+        if course_no < 500:
+            if grade_bound not in d['undergrad']['grades']:
+                d['undergrad']['grades'][grade_bound] = grade
+            else:
+                d['undergrad']['grades'][grade_bound] += grade
+
+
+def get_statistics(d, professor):
+    values = general_get(find_name(professor)).json
+    d['stats'] = {}
+    d['stats']['name'] = professor
+
+    yearsU = set()
+    yearsA = set()
+
+    taughtU = set()
+    taughtA = set()
+
+    countU = 0
+    countA = 0
+
+    highavgU = 0
+    highsubjectU = ''
+    highcourseU = ''
+    highyearU = ''
+
+    highavgA = 0
+    highsubjectA = ''
+    highcourseA = ''
+    highyearA = ''
+
+    for val in values:
+        subject = val['subject']
+        course = val['course']
+        year = val['year_session']
+        avg = val['stats']['average']
+        try:
+            course_no = int(course)
+        except ValueError:
+            course_no = int(course)
+
+        if course_no < 500:
+            if avg > highavgU:
+                highavgU = avg
+                highsubjectU = subject
+                highcourseU = course
+                highyearU = year
+
+            countU += val['enrolled']
+            yearsU.add(year)
+            taughtU.add(subject)
+
+        if avg > highavgA:
+            highavgA = avg
+            highsubjectA = subject
+            highcourseA = course
+            highyearA = year
+
+        countA += val['enrolled']
+        yearsA.add(year)
+        taughtA.add(subject)
+
+    d['stats']['undergrad'] = {
+        'avg_high': highavgU,
+        'subject_high': highsubjectU,
+        'course_high': highcourseU,
+        'year_high': highyearU,
+        'count': countU,
+        'years_taught': list(yearsU),
+        'subject_taught': list(taughtU)
+    }
+    d['stats']['grad'] = {
+        'avg_high': highavgA,
+        'subject_high': highsubjectA,
+        'course_high': highcourseA,
+        'year_high': highyearA,
+        'count': countA,
+        'years_taught': list(yearsA),
+        'subject_taught': list(taughtA)
+    }
+    return d
+
+
 def convert_to_general_overall(json_query):
     """
     Given a JSON query, typically with multiple courses, returns the
@@ -165,34 +268,6 @@ def convert_to_general_overall(json_query):
         pass_ratio_all.append(stats['pass'] / (stats['pass'] + stats['fail']))
 
     calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr)
-
     calculate_all_to_json(all_arr, d, pass_ratio_all)
+
     return d
-
-
-def calculate_all_to_json(all_arr, d, pass_ratio_all):
-    d['all']['average'] = statistics.mean(all_arr)
-    d['all']['stdev'] = statistics.stdev(all_arr) if len(all_arr) >= 2 else 0.00
-    d['all']['median'] = statistics.median(all_arr)
-    d['all']['pass'] = statistics.mean(pass_ratio_all)
-
-
-def calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr):
-    d['undergrad']['average'] = statistics.mean(undergrad_arr)
-    d['undergrad']['stdev'] = statistics.stdev(undergrad_arr) if len(undergrad_arr) >= 2 else 0.00
-    d['undergrad']['median'] = statistics.median(undergrad_arr)
-    d['undergrad']['pass'] = statistics.mean(pass_ratio_undergrad)
-
-
-def add_grade_values(course_no, d, grades):
-    for grade_bound, grade in grades.items():
-        if grade_bound not in d['all']['grades']:
-            d['all']['grades'][grade_bound] = grade
-        else:
-            d['all']['grades'][grade_bound] += grade
-
-        if course_no < 500:
-            if grade_bound not in d['undergrad']['grades']:
-                d['undergrad']['grades'][grade_bound] = grade
-            else:
-                d['undergrad']['grades'][grade_bound] += grade

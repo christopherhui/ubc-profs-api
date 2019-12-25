@@ -94,6 +94,7 @@ class Section(Resource):
 
         return jsonify(new_results)
 
+
 class Professors(Resource):
     def get(self):
         """

@@ -21,3 +21,5 @@ def test_correct_names():
     assert find_name(prof6) == 'O\'Flynn-Magee, Katherine'
     prof7 = 'SUN-XIA0NON'
     assert find_name(prof7) == 'SUN, XIA0NON'
+    prof8 = 'MacLean, Mark Thomson'
+    assert find_name(prof8) == 'MacLean, Mark Thomson'

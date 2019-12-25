@@ -1,4 +1,5 @@
 var ctx = document.getElementById('generalStats');
+var stats = null;
 
 var myChart = new Chart(ctx, {
     type: 'bar',
@@ -132,21 +133,41 @@ function search(theUrl) {
     });
 
     submit.done(function gotResults(res) {
-        // Todo: Undergraduate results for now
-        const underGradRes = res["undergrad"];
-        const underGradGrades = underGradRes["grades"];
-        const data = [underGradGrades["0-9%"], underGradGrades["10-19%"], underGradGrades["20-29%"], underGradGrades["30-39%"],
-            underGradGrades["40-49%"], underGradGrades["50-54%"], underGradGrades["55-59%"], underGradGrades["60-63%"],
-            underGradGrades["64-67%"], underGradGrades["68-71%"], underGradGrades["72-75%"], underGradGrades["76-79%"],
-            underGradGrades["80-84%"], underGradGrades["85-89%"], underGradGrades["90-100%"]];
-        addProfData(myChart, data);
-        $("#overall-avg").text(underGradRes["average"].toFixed(2));
-        $("#overall-std").text(underGradRes["stdev"].toFixed(2));
-        $("#overall-median").text(underGradRes["median"].toFixed(2));
-        $("#overall-passed").text(underGradRes["pass"].toFixed(2));
+        stats = res;
+        changeToUndergrad();
     });
 
     submit.fail(function noResult(err) {
         console.log(err, "Certified Bruh Moment");
     });
+}
+
+function changeToUndergrad() {
+    const underGradRes = stats["undergrad"];
+    const underGradGrades = underGradRes["grades"];
+    const data = [underGradGrades["0-9%"], underGradGrades["10-19%"], underGradGrades["20-29%"], underGradGrades["30-39%"],
+        underGradGrades["40-49%"], underGradGrades["50-54%"], underGradGrades["55-59%"], underGradGrades["60-63%"],
+        underGradGrades["64-67%"], underGradGrades["68-71%"], underGradGrades["72-75%"], underGradGrades["76-79%"],
+        underGradGrades["80-84%"], underGradGrades["85-89%"], underGradGrades["90-100%"]];
+    addProfData(myChart, data);
+    $("#overall-avg").text(underGradRes["average"].toFixed(2));
+    $("#overall-std").text(underGradRes["stdev"].toFixed(2));
+    $("#overall-median").text(underGradRes["median"].toFixed(2));
+    $("#overall-passed").text(underGradRes["pass"].toFixed(2));
+    $("#home-graph").text("Undergraduate Grade Distribution")
+}
+
+function changeToAll() {
+    const allRes = stats["all"];
+    const allGrades = allRes["grades"];
+    const data = [allGrades["0-9%"], allGrades["10-19%"], allGrades["20-29%"], allGrades["30-39%"],
+        allGrades["40-49%"], allGrades["50-54%"], allGrades["55-59%"], allGrades["60-63%"],
+        allGrades["64-67%"], allGrades["68-71%"], allGrades["72-75%"], allGrades["76-79%"],
+        allGrades["80-84%"], allGrades["85-89%"], allGrades["90-100%"]];
+    addProfData(myChart, data);
+    $("#overall-avg").text(allRes["average"].toFixed(2));
+    $("#overall-std").text(allRes["stdev"].toFixed(2));
+    $("#overall-median").text(allRes["median"].toFixed(2));
+    $("#overall-passed").text(allRes["pass"].toFixed(2));
+    $("#home-graph").text("Overall Grade Distribution")
 }

@@ -15,16 +15,35 @@ function profSearchCustom() {
     const section = $('#dropdownMenuButtonSection');
 
     if (subject.text() === "All") {
-        search(`/api/general-stats/${profInput}`);
+        searchSpecific(`/api/general-stats/${profInput}`);
     } else if (course.text() === "All") {
-        search(`/api/general-stats/${profInput}/${subject.text()}`)
+        searchSpecific(`/api/general-stats/${profInput}/${subject.text()}`)
     } else if (year.text() === "All") {
-        search(`/api/general-stats/${profInput}/${subject.text()}/${course.text()}`)
+        searchSpecific(`/api/general-stats/${profInput}/${subject.text()}/${course.text()}`)
     } else if (section.text() === "All") {
-        search(`/api/general-stats/${profInput}/${subject.text()}/${course.text()}/${year.text()}`)
+        searchSpecific(`/api/general-stats/${profInput}/${subject.text()}/${course.text()}/${year.text()}`)
     } else {
-        search(`/api/general-stats/${profInput}/${subject.text()}/${course.text()}/${year.text()}/${section.text()}`)
+        searchSpecific(`/api/general-stats/${profInput}/${subject.text()}/${course.text()}/${year.text()}/${section.text()}`)
     }
+}
+
+function searchSpecific(theUrl) {
+    const submit = $.ajax({
+        type: "GET",
+        url: theUrl
+    });
+
+    submit.done(function gotResults(res) {
+        stats = res;
+        course = $('#dropdownMenuButtonCourse');
+        if (course.text() === '5' || course.text() === '6' || course.text() === '7' || course.text() === '8' || course.text() === '9') {
+
+        }
+    });
+
+    submit.fail(function noResult(err) {
+        console.log(err, "Certified Bruh Moment");
+    });
 }
 
 function clearCourse() {

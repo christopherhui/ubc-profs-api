@@ -198,11 +198,12 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xl-8 col-lg-7">
+                        <div class="col-xl-7 col-lg-6">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Overall Grade Distribution</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary" id="home-graph">Undergraduate Grade
+                                        Distribution</h6>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -210,11 +211,11 @@
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                              aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
+                                            <div class="dropdown-header">Options:</div>
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                               onclick="changeToUndergrad();">Show undergrad courses</a>
+                                            <a class="dropdown-item" href="javascript:void(0)" onclick="changeToAll();">Show
+                                                all courses</a>
                                         </div>
                                     </div>
                                 </div>
@@ -225,6 +226,39 @@
                                             style="display: block; height: 320px; width: 605px;"></canvas>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-auto">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Statistics</th>
+                                        <th scope="col">Values</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr id="prof-name">
+                                        <th scope="row">Name</th>
+                                    </tr>
+                                    <tr id="less-50">
+                                        <th scope="row"><50%</th>
+                                    </tr>
+                                    <tr id="more-50">
+                                        <th scope="row">>50%</th>
+                                    </tr>
+                                    <tr id="courses-taught">
+                                        <th scope="row">Courses Taught</th>
+                                    </tr>
+                                    <tr id="years-taught">
+                                        <th scope="row">Years Taught</th>
+                                    </tr>
+                                    <tr id="highest-course-average">
+                                        <th scope="row">Highest Course Average</th>
+                                    </tr>
+                                    <tr id="lowest-course-average">
+                                        <th scope="row">Lowest Course Average</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
                         </div>
                     </div>
                 </div>
