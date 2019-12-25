@@ -109,7 +109,7 @@
                         <!-- Search form -->
                         <div class="col-lg-5 mb-3">
                             <div class="md-form">
-                                <form id="search-prof-form" onsubmit="profSearchCustom();return false;">
+                                <form id="search-prof-form" onsubmit="profSearchTime();return false;">
                                     <div class="input-group">
                                         <input class="form-control" id="search-input-prof" type="text"
                                                placeholder="Search Professor"
@@ -126,120 +126,15 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-auto">
-                            <p class="title-dropdown">Subject:</p>
-                            <div class="dropdown no-arrow mb-4">
-                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                        id="dropdownMenuButtonSubject" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">All</button>
-                                <div class="dropdown-menu" id="subject-dropdown" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="javascript:void(0)">All</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-auto">
-                            <p class="title-dropdown">Course:</p>
-                            <div class="dropdown no-arrow mb-4">
-                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                        id="dropdownMenuButtonCourse" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">All</button>
-                                <div class="dropdown-menu" id="course-dropdown" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="javascript:void(0)">All</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xl-5 col-md-6 mb-4">
-                            <div class="card border-bottom-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                                Overall
-                                                Average
-                                            </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-avg">0
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-5 col-md-6 mb-4">
-                            <div class="card border-bottom-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                                Overall
-                                                Standard Deviation
-                                            </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-std">0
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-5 col-md-6 mb-4">
-                            <div class="card border-bottom-danger shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                                Overall
-                                                Median
-                                            </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-median">
-                                                0
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-5 col-md-6 mb-4">
-                            <div class="card border-bottom-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                                Percentage Passed
-                                            </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-passed">
-                                                0
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-xl-10 col-lg-7">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Overall Grade Distribution</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Course averages overtime in years</h6>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <canvas id="generalStats" width="756" height="400"
+                                    <canvas id="avg-date" width="756" height="400"
                                             class="chartjs-render-monitor"
                                             style="display: block; height: 320px; width: 605px;"></canvas>
                                 </div>

@@ -2,6 +2,7 @@ import math
 import sqlite3
 import re
 import statistics
+from collections import OrderedDict
 
 from flask import jsonify
 from api import app
@@ -115,20 +116,21 @@ def general_get(professor, add_query='', *options):
     return jsonify(results)
 
 
-def calculate_all_to_json(all_arr, d, pass_ratio_all):
+def calculate_all_to_json(all_arr, all_std, d, pass_ratio_all):
     if len(all_arr) > 0:
         d['all']['average'] = statistics.mean(all_arr) if len(all_arr) >= 2 else all_arr[0]
-        d['all']['stdev'] = statistics.stdev(all_arr) if len(all_arr) >= 2 else 0.00
+        d['all']['stdev'] = math.sqrt(sum(all_std))/len(all_std) if len(all_std) >= 2 else math.sqrt(all_std[0])
         d['all']['median'] = statistics.median(all_arr) if len(all_arr) >= 2 else all_arr[0]
         d['all']['pass'] = statistics.mean(pass_ratio_all) if len(all_arr) >= 2 else pass_ratio_all[0]
 
 
-def calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr):
+def calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr, undergrad_std):
     if len(undergrad_arr) > 0:
         d['undergrad']['average'] = statistics.mean(undergrad_arr) if len(undergrad_arr) >= 2 else undergrad_arr[0]
-        d['undergrad']['stdev'] = statistics.stdev(undergrad_arr) if len(undergrad_arr) >= 2 else 0.00
+        d['undergrad']['stdev'] = math.sqrt(sum(undergrad_std))/len(undergrad_std) if len(undergrad_std) >= 2 else math.sqrt(undergrad_std[0])
         d['undergrad']['median'] = statistics.median(undergrad_arr) if len(undergrad_arr) >= 2 else undergrad_arr[0]
-        d['undergrad']['pass'] = statistics.mean(pass_ratio_undergrad) if len(undergrad_arr) >= 2 else pass_ratio_undergrad[0]
+        d['undergrad']['pass'] = statistics.mean(pass_ratio_undergrad) if len(undergrad_arr) >= 2 else \
+        pass_ratio_undergrad[0]
 
 
 def add_grade_values(course_no, d, grades):
@@ -284,9 +286,11 @@ def convert_to_general_overall(json_query):
 
     pass_ratio_undergrad = []
     undergrad_arr = []
+    undergrad_std = []
 
     pass_ratio_all = []
     all_arr = []
+    all_std = []
 
     for query in json_query:
         grades = query['grades']
@@ -307,11 +311,36 @@ def convert_to_general_overall(json_query):
 
         if course_no < 500:
             undergrad_arr.append(stats['average'])
+            undergrad_std.append(stats['stdev'] ** 2)
             pass_ratio_undergrad.append(stats['pass'] / (stats['pass'] + stats['fail']))
+
         all_arr.append(stats['average'])
+        all_std.append(stats['stdev'] ** 2)
         pass_ratio_all.append(stats['pass'] / (stats['pass'] + stats['fail']))
 
-        calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr)
-        calculate_all_to_json(all_arr, d, pass_ratio_all)
+    calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr, undergrad_std)
+    calculate_all_to_json(all_arr, all_std, d, pass_ratio_all)
+
+    return d
+
+
+def group_to_years(json_query):
+    d = OrderedDict({})
+    for query in json_query:
+        stats = query['stats']
+        year = query['year_session']
+        if year not in d:
+            d[year] = {
+                'average': [stats['average']],
+                'high': stats['high'],
+                'low': stats['low']
+            }
+        else:
+            d[year]['average'].append(stats['average'])
+            d[year]['high'] = max(d[year]['high'], stats['high'])
+            d[year]['low'] = max(d[year]['low'], stats['low'])
+
+    for year in d:
+        d[year]['average'] = statistics.mean(d[year]['average'])
 
     return d

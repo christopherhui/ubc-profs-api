@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import jsonify, request
 
-from prof_api.helper_functions import general_get, convert_to_general_overall, find_name, get_statistics
+from prof_api.helper_functions import *
 
 
 class allSessions(Resource):
@@ -136,3 +136,9 @@ class generalStatisticsVerbose(Resource):
         results = general_get(find_name(professor)).json
         d = convert_to_general_overall(results)
         return jsonify(get_statistics(d, professor, results))
+
+
+class generalStatisticsByYear(Resource):
+    def get(self, professor):
+        results = general_get(find_name(professor)).json
+        return jsonify(group_to_years(results))
