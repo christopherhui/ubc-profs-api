@@ -1,5 +1,3 @@
-// TODO: Once they type something, clear form from subject, course, year
-
 function formatProfName(profName) {
     profName = profName.replace(/, /g, '-');
     profName = profName.replace(/ /g, '-');
@@ -34,11 +32,17 @@ function searchSpecific(theUrl) {
     });
 
     submit.done(function gotResults(res) {
-        stats = res;
-        course = $('#dropdownMenuButtonCourse');
-        if (course.text() === '5' || course.text() === '6' || course.text() === '7' || course.text() === '8' || course.text() === '9') {
-
-        }
+        const allRes = res["all"];
+        const allGrades = allRes["grades"];
+        const data = [allGrades["0-9%"], allGrades["10-19%"], allGrades["20-29%"], allGrades["30-39%"],
+            allGrades["40-49%"], allGrades["50-54%"], allGrades["55-59%"], allGrades["60-63%"],
+            allGrades["64-67%"], allGrades["68-71%"], allGrades["72-75%"], allGrades["76-79%"],
+            allGrades["80-84%"], allGrades["85-89%"], allGrades["90-100%"]];
+        addProfData(myChart, data);
+        $("#overall-avg").text(allRes["average"].toFixed(2));
+        $("#overall-std").text(allRes["stdev"].toFixed(2));
+        $("#overall-median").text(allRes["median"].toFixed(2));
+        $("#overall-passed").text(allRes["pass"].toFixed(2));
     });
 
     submit.fail(function noResult(err) {

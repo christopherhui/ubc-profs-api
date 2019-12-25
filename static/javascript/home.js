@@ -134,7 +134,7 @@ function search(theUrl) {
 
     submit.done(function gotResults(res) {
         stats = res;
-        changeToUndergrad();
+        changeToAll();
     });
 
     submit.fail(function noResult(err) {
