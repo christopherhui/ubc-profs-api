@@ -116,17 +116,19 @@ def general_get(professor, add_query='', *options):
 
 
 def calculate_all_to_json(all_arr, d, pass_ratio_all):
-    d['all']['average'] = statistics.mean(all_arr) if len(all_arr) >= 2 else all_arr[0]
-    d['all']['stdev'] = statistics.stdev(all_arr) if len(all_arr) >= 2 else 0.00
-    d['all']['median'] = statistics.median(all_arr) if len(all_arr) >= 2 else all_arr[0]
-    d['all']['pass'] = statistics.mean(pass_ratio_all) if len(all_arr) >= 2 else pass_ratio_all[0]
+    if len(all_arr) > 0:
+        d['all']['average'] = statistics.mean(all_arr) if len(all_arr) >= 2 else all_arr[0]
+        d['all']['stdev'] = statistics.stdev(all_arr) if len(all_arr) >= 2 else 0.00
+        d['all']['median'] = statistics.median(all_arr) if len(all_arr) >= 2 else all_arr[0]
+        d['all']['pass'] = statistics.mean(pass_ratio_all) if len(all_arr) >= 2 else pass_ratio_all[0]
 
 
 def calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr):
-    d['undergrad']['average'] = statistics.mean(undergrad_arr) if len(undergrad_arr) >= 2 else undergrad_arr[0]
-    d['undergrad']['stdev'] = statistics.stdev(undergrad_arr) if len(undergrad_arr) >= 2 else 0.00
-    d['undergrad']['median'] = statistics.median(undergrad_arr) if len(undergrad_arr) >= 2 else undergrad_arr[0]
-    d['undergrad']['pass'] = statistics.mean(pass_ratio_undergrad) if len(undergrad_arr) >= 2 else pass_ratio_undergrad[0]
+    if len(undergrad_arr) > 0:
+        d['undergrad']['average'] = statistics.mean(undergrad_arr) if len(undergrad_arr) >= 2 else undergrad_arr[0]
+        d['undergrad']['stdev'] = statistics.stdev(undergrad_arr) if len(undergrad_arr) >= 2 else 0.00
+        d['undergrad']['median'] = statistics.median(undergrad_arr) if len(undergrad_arr) >= 2 else undergrad_arr[0]
+        d['undergrad']['pass'] = statistics.mean(pass_ratio_undergrad) if len(undergrad_arr) >= 2 else pass_ratio_undergrad[0]
 
 
 def add_grade_values(course_no, d, grades):
@@ -143,8 +145,8 @@ def add_grade_values(course_no, d, grades):
                 d['undergrad']['grades'][grade_bound] += grade
 
 
-def get_statistics(d, professor):
-    values = general_get(find_name(professor)).json
+def get_statistics(d, professor, json_query):
+    values = json_query
     d['stats'] = {}
     d['stats']['name'] = find_name(professor)
 
@@ -279,8 +281,7 @@ def convert_to_general_overall(json_query):
         all_arr.append(stats['average'])
         pass_ratio_all.append(stats['pass'] / (stats['pass'] + stats['fail']))
 
-        if len(undergrad_arr) > 0:
-            calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr)
-            calculate_all_to_json(all_arr, d, pass_ratio_all)
+        calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr)
+        calculate_all_to_json(all_arr, d, pass_ratio_all)
 
     return d

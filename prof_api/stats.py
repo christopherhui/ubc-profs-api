@@ -135,4 +135,4 @@ class generalStatisticsVerbose(Resource):
     def get(self, professor):
         results = general_get(find_name(professor)).json
         d = convert_to_general_overall(results)
-        return jsonify(get_statistics(d, professor))
+        return jsonify(get_statistics(d, professor, results))
