@@ -69,6 +69,7 @@ document.getElementById("search-input-prof").onkeydown = function findResults() 
     const profInput = document.getElementById("search-input-prof").value;
     const theUrl = "/api/professors";
     $('#result').empty();
+    $('.search-status').empty();
 
     if (profInput.length >= 2) {
         xhr.onload = function () {
@@ -127,18 +128,27 @@ function profSearch() {
 
 // Todo: #overall-* is used in many html files, and this function can be used many times, any refactoring required?
 function search(theUrl) {
+    const search1 = $(".search-status");
+    search1.empty();
+
     const submit = $.ajax({
         type: "GET",
         url: theUrl
     });
 
     submit.done(function gotResults(res) {
-        stats = res;
-        changeToAll();
+        const search1 = $(".search-status");
+        if (res['stats']['name'] === '') {
+            search1.append("<span class=\"input-group-text bg-warning text-white\" id=\"inputGroup-sizing-default\">No information was found.</span>");
+        } else {
+            stats = res;
+            changeToAll();
+            search1.append("<span class=\"input-group-text bg-success text-white\" id=\"inputGroup-sizing-default\">Success!</span>");
+        }
     });
 
     submit.fail(function noResult(err) {
-        console.log(err, "Certified Bruh Moment");
+        search1.append("<span class=\"input-group-text bg-warning text-white\" id=\"inputGroup-sizing-default\">No information was found.</span>");
     });
 }
 

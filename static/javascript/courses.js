@@ -26,6 +26,9 @@ function profSearchCustom() {
 }
 
 function searchSpecific(theUrl) {
+    const search = $(".search-status");
+    search.empty();
+
     const submit = $.ajax({
         type: "GET",
         url: theUrl
@@ -43,10 +46,15 @@ function searchSpecific(theUrl) {
         $("#overall-std").text(allRes["stdev"].toFixed(2));
         $("#overall-median").text(allRes["median"].toFixed(2));
         $("#overall-passed").text(allRes["pass"].toFixed(2));
+
+
+        const search = $(".search-status");
+        search.append("<span class=\"input-group-text bg-success text-white\" id=\"inputGroup-sizing-default\">Success!</span>");
     });
 
     submit.fail(function noResult(err) {
         console.log(err, "Certified Bruh Moment");
+        search.append("<span class=\"input-group-text bg-warning text-white\" id=\"inputGroup-sizing-default\">No information was found.</span>");
     });
 }
 

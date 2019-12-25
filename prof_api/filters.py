@@ -135,3 +135,20 @@ class Professors(Resource):
             results = cur.execute(query, ['%' + prof_name + '%']).fetchall()
 
         return jsonify(results) if len(results) <= 5 else jsonify(results[0:5])
+
+
+class SubjectCourseProfessor(Resource):
+    def get(self, subject, course):
+        query = 'SELECT DISTINCT professor.* FROM professor ' \
+                'INNER JOIN association ON professor.id = association.professor_id ' \
+                'INNER JOIN course ON course.id = association.course_id ' \
+                'INNER JOIN stats ON course.id=stats.course_id ' \
+                'INNER JOIN grades ON course.id = grades.course_id ' \
+                'WHERE course.subject = ? AND course.course = ?'
+
+        conn = sqlite3.connect(app.config['DATABASE_NAME'])
+        cur = conn.cursor()
+        results = cur.execute(query, [subject, course]).fetchall()
+        new_results = [result[0] for result in results]
+
+        return jsonify(new_results)
