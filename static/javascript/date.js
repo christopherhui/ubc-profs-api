@@ -45,12 +45,35 @@ function profSearchTime() {
     });
 
     submit.done(function getYears(res) {
-        myLineChart.data.labels = Object.keys(res);
+        const years = Object.keys(res);
         const stuff = Object.values(res);
-        myLineChart.data.datasets[0].data = stuff.map(x => x['average']);
-        myLineChart.data.datasets[1].data = stuff.map(x => x['high']);
-        myLineChart.data.datasets[2].data = stuff.map(x => x['low']);
+        const averages = stuff.map(x => x['average'].toFixed(2));
+        const highs = stuff.map(x => x['high'].toFixed(0));
+        const lows = stuff.map(x => x['low'].toFixed(0));
+
+        myLineChart.data.labels = years;
+        myLineChart.data.datasets[0].data = averages;
+        myLineChart.data.datasets[1].data = highs;
+        myLineChart.data.datasets[2].data = lows;
         myLineChart.update();
+
+        const columns = $('#columns-date');
+        columns.empty();
+        columns.append("<th scope=\"col\">Data</th>");
+        const $average = $('#average-date');
+        $average.empty();
+        $average.append('<th scope="row">Average</th>');
+        const $max = $('#max-date');
+        $max.empty();
+        $max.append('<th scope="row">Max Grade</th>');
+        const $min = $('#min-date');
+        $min.empty();
+        $min.append('<th scope="row">Min Grade</th>');
+
+        years.forEach(year => columns.append(`<th scope="col">${year}</th>`));
+        averages.forEach(average => $average.append(`<td>${average}</td>`));
+        highs.forEach(high => $max.append(`<td>${high}</td>`));
+        lows.forEach(low => $min.append(`<td>${low}</td>`));
     });
 
     submit.fail(function noResult(err) {
