@@ -329,6 +329,14 @@ def group_to_years(json_query):
     for query in json_query:
         stats = query['stats']
         year = query['year_session']
+        try:
+            course_no = int(query['course'])
+        except ValueError:
+            course_no = int(query['course'][0:3])
+
+        if course_no >= 500:
+            continue
+
         if year not in d:
             d[year] = {
                 'average': [stats['average']],

@@ -142,7 +142,7 @@ function search(theUrl) {
             search1.append("<span class=\"input-group-text bg-warning text-white\" id=\"inputGroup-sizing-default\">No information was found.</span>");
         } else {
             stats = res;
-            changeToAll();
+            changeToUndergrad();
             search1.append("<span class=\"input-group-text bg-success text-white\" id=\"inputGroup-sizing-default\">Success!</span>");
         }
     });
