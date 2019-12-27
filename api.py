@@ -58,3 +58,7 @@ def date():
 @app.route('/course-comparator')
 def course_comparator():
     return flask.render_template('course-selector.html')
+
+@app.route('/about')
+def about():
+    return flask.render_template('about.html')
