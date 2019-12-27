@@ -138,6 +138,13 @@ class generalStatisticsVerbose(Resource):
         return jsonify(get_statistics(d, professor, results))
 
 
+class generalStatisticsVerboseByCourse(Resource):
+    def get(self, professor, subject, course):
+        results = general_get(find_name(professor), 'AND course.subject = ? AND course.course = ?', subject.upper(), course).json
+        d = convert_to_general_overall(results)
+        return jsonify(get_statistics(d, professor, results))
+
+
 class generalStatisticsByYear(Resource):
     def get(self, professor):
         results = general_get(find_name(professor)).json

@@ -137,9 +137,22 @@ class Professors(Resource):
         return jsonify(results) if len(results) <= 5 else jsonify(results[0:5])
 
 
+class SubjectFindCourses(Resource):
+    def get(self, subject):
+        query = 'SELECT DISTINCT course.course FROM course WHERE course.subject = ? ' \
+                'ORDER BY course.course;'
+
+        conn = sqlite3.connect(app.config['DATABASE_NAME'])
+        cur = conn.cursor()
+        results = cur.execute(query, [subject]).fetchall()
+        new_results = [result[0] for result in results]
+
+        return jsonify(new_results)
+
+
 class SubjectCourseProfessor(Resource):
     def get(self, subject, course):
-        query = 'SELECT DISTINCT professor.* FROM professor ' \
+        query = 'SELECT DISTINCT professor.name FROM professor ' \
                 'INNER JOIN association ON professor.id = association.professor_id ' \
                 'INNER JOIN course ON course.id = association.course_id ' \
                 'INNER JOIN stats ON course.id=stats.course_id ' \

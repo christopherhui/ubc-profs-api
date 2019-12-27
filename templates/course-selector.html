@@ -103,40 +103,32 @@
                             for each course.</p>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-2">
+                    <div class="row mb-3">
+                        <div class="col-auto">
                             <p class="title-dropdown">Subject:</p>
-                            <div class="dropdown no-arrow mb-4">
-                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                        id="dropdownMenuButtonSubject" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">All
-                                </button>
-                                <div class="dropdown-menu" id="subject-dropdown" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="javascript:void(0)">All</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <p class="title-dropdown">Course:</p>
-                            <div class="dropdown no-arrow mb-4">
-                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                        id="dropdownMenuButtonCourse" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">All
-                                </button>
-                                <div class="dropdown-menu" id="course-dropdown" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="javascript:void(0)">All</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <p class="title-dropdown">Instructors:</p>
-                            <select class="selectpicker" multiple data-selected-text-format="count > 3"
-                                    data-style="btn-info">
-                                <option>Mustard</option>
-                                <option>Ketchup</option>
-                                <option>Relish</option>
-                                <option>Onions</option>
+                            <select class="selectpicker subject-picker" data-style="btn-success" data-live-search="true"
+                                    title="Choose a subject">
                             </select>
+                        </div>
+                        <div class="col-auto">
+                            <p class="title-dropdown">Course:</p>
+                            <select class="selectpicker course-picker" data-style="btn-danger" data-live-search="true"
+                                    title="Choose a course">
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <p class="title-dropdown">Professors:</p>
+                            <select class="selectpicker instructor-picker" multiple
+                                    data-selected-text-format="count > 2"
+                                    data-style="btn-primary" data-max-options="5" data-live-search="true"
+                                    title="Choose a maximum of 5">
+                            </select>
+                        </div>
+                        <div class="col-auto mt-sm-2">
+                            <form id="search-prof-form" onsubmit="compare();return false;">
+                                <input type="submit" value="Search" id="search-prof"
+                                       class="btn btn-default"/>
+                            </form>
                         </div>
                     </div>
 
@@ -222,11 +214,11 @@
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Overall Grade Distribution</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Distribution Chart</h6>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <canvas id="generalStats" width="756" height="400"
+                                    <canvas id="profCompare" width="756" height="400"
                                             class="chartjs-render-monitor"
                                             style="display: block; height: 320px; width: 605px;"></canvas>
                                 </div>
@@ -237,5 +229,7 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ url_for('static', filename='javascript/course-selector.js') }}"></script>
 
 {% endblock %}

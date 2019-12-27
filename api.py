@@ -21,6 +21,7 @@ api.add_resource(filters.Subject, '/api/subjects/<string:professor>/<string:subj
 api.add_resource(filters.Year, '/api/years/<string:professor>/<string:subject>/<string:course>')
 api.add_resource(filters.Section, '/api/sections/<string:professor>/<string:subject>/<string:course>/<string:year>')
 api.add_resource(filters.Professors, '/api/professors')
+api.add_resource(filters.SubjectFindCourses, '/api/subjects/courses/<string:subject>')
 api.add_resource(filters.SubjectCourseProfessor, '/api/professors/<string:subject>/<string:course>')
 
 import prof_api.stats as stats
@@ -36,6 +37,7 @@ api.add_resource(stats.generalStatisticsByYear, '/api/stats/years/<string:profes
 
 api.add_resource(stats.generalStatistics, '/api/general-stats/<string:professor>')
 api.add_resource(stats.generalStatisticsVerbose, '/api/general-stats-verbose/<string:professor>')
+api.add_resource(stats.generalStatisticsVerboseByCourse, '/api/general-stats-verbose/<string:professor>/<string:subject>/<string:course>')
 api.add_resource(stats.generalStatisticsSubject, '/api/general-stats/<string:professor>/<string:subject>')
 api.add_resource(stats.generalStatisticsSubjectCourse, '/api/general-stats/<string:professor>/<string:subject>/<string:course>')
 api.add_resource(stats.generalStatisticsSubjectCourseYear, '/api/general-stats/<string:professor>/<string:subject>/<string:course>/<string:year>')
