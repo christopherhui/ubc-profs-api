@@ -130,7 +130,8 @@
                             <div class="dropdown no-arrow mb-4">
                                 <button class="btn btn-secondary dropdown-toggle" type="button"
                                         id="dropdownMenuButtonSubject" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">All</button>
+                                        aria-expanded="false">All
+                                </button>
                                 <div class="dropdown-menu" id="subject-dropdown" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="javascript:void(0)">All</a>
                                 </div>
@@ -141,7 +142,8 @@
                             <div class="dropdown no-arrow mb-4">
                                 <button class="btn btn-secondary dropdown-toggle" type="button"
                                         id="dropdownMenuButtonCourse" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">All</button>
+                                        aria-expanded="false">All
+                                </button>
                                 <div class="dropdown-menu" id="course-dropdown" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="javascript:void(0)">All</a>
                                 </div>
@@ -152,7 +154,8 @@
                             <div class="dropdown no-arrow mb-4">
                                 <button class="btn btn-secondary dropdown-toggle" type="button"
                                         id="dropdownMenuButtonYear" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">All</button>
+                                        aria-expanded="false">All
+                                </button>
                                 <div class="dropdown-menu" id="year-dropdown" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="javascript:void(0)">All</a>
                                 </div>
@@ -163,7 +166,8 @@
                             <div class="dropdown no-arrow mb-4">
                                 <button class="btn btn-secondary dropdown-toggle" type="button"
                                         id="dropdownMenuButtonSection" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">All</button>
+                                        aria-expanded="false">All
+                                </button>
                                 <div class="dropdown-menu" id="section-dropdown" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="javascript:void(0)">All</a>
                                 </div>
@@ -271,5 +275,8 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ url_for('static', filename='javascript/courses.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/home.js') }}"></script>
 
 {% endblock %}

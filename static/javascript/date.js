@@ -35,6 +35,12 @@ var myLineChart = new Chart(ctx, {
     }
 });
 
+function formatProfName(profName) {
+    profName = profName.replace(/, /g, '-');
+    profName = profName.replace(/ /g, '-');
+    return profName;
+}
+
 function profSearchTime() {
     let profInput = $('#search-input-prof').val();
     profInput = formatProfName(profInput);
