@@ -334,7 +334,7 @@ def group_to_years(json_query):
         except ValueError:
             course_no = int(query['course'][0:3])
 
-        if course_no >= 500:
+        if course_no >= 500 or stats['high'] == '':
             continue
 
         if year not in d:

@@ -104,87 +104,108 @@
                     </div>
 
                     <div class="row">
-                        <!-- Search form -->
-                        <div class="col-lg-6 mb-3">
-                            <div class="md-form">
-                                <form id="search-prof-form" onsubmit="profSearch();return false;">
-                                    <div class="input-group">
-                                        <input class="form-control" id="search-input-prof" type="text"
-                                               placeholder="Search Professor"
-                                               aria-label="Search" autocomplete="off" onkeydown="findResults();"/>
-                                        <div class="input-group-btn">
-                                            <input type="submit" value="Search" id="search-prof"
-                                                   class="btn btn-default"/>
-                                        </div>
-                                        <div class="input-group-append search-status"></div>
-                                    </div>
-                                </form>
-                                <ul class="list-group" id="result"></ul>
+                        <div class="col-md-2">
+                            <p class="title-dropdown">Subject:</p>
+                            <div class="dropdown no-arrow mb-4">
+                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                        id="dropdownMenuButtonSubject" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">All
+                                </button>
+                                <div class="dropdown-menu" id="subject-dropdown" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="javascript:void(0)">All</a>
+                                </div>
                             </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="title-dropdown">Course:</p>
+                            <div class="dropdown no-arrow mb-4">
+                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                        id="dropdownMenuButtonCourse" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">All
+                                </button>
+                                <div class="dropdown-menu" id="course-dropdown" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="javascript:void(0)">All</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="title-dropdown">Instructors:</p>
+                            <select class="selectpicker" multiple data-selected-text-format="count > 3"
+                                    data-style="btn-info">
+                                <option>Mustard</option>
+                                <option>Ketchup</option>
+                                <option>Relish</option>
+                                <option>Onions</option>
+                            </select>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-xl-5 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Overall
-                                                Average
-                                            </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-avg">0</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-5 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Overall
-                                                Standard Deviation
-                                            </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-std">0</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-5 col-md-6 mb-4">
-                            <div class="card border-left-danger shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Overall
-                                                Median
-                                            </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-median">0
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-5 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card border-bottom-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                                Percentage Passed
+                                                Highest Average
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-passed">0
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-avg">0
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-md-6 mb-4">
+                            <div class="card border-bottom-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                                Lowest Standard Deviation
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-std">0
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-md-6 mb-4">
+                            <div class="card border-bottom-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                                Highest # of Years Taught
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-median">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-md-6 mb-4">
+                            <div class="card border-bottom-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                                Highest # of Students Taught
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="overall-passed">
+                                                0
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -197,26 +218,11 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xl-7 col-lg-6">
+                        <div class="col-xl-10 col-lg-7">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary" id="home-graph">Undergraduate Grade
-                                        Distribution</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                             aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Options:</div>
-                                            <a class="dropdown-item" href="javascript:void(0)"
-                                               onclick="changeToUndergrad();">Show undergrad courses</a>
-                                            <a class="dropdown-item" href="javascript:void(0)" onclick="changeToAll();">Show
-                                                all courses</a>
-                                        </div>
-                                    </div>
+                                    <h6 class="m-0 font-weight-bold text-primary">Overall Grade Distribution</h6>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
@@ -225,38 +231,6 @@
                                             style="display: block; height: 320px; width: 605px;"></canvas>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-auto">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Statistics</th>
-                                    <th scope="col">Values</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th scope="row">Name</th>
-                                    <td id="prof-name"></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"># of Students Taught</th>
-                                    <td id="students-taught"></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Subjects Taught</th>
-                                    <td id="subjects-taught"></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Highest Course Average</th>
-                                    <td id="highest-course-average"></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Lowest Course Average</th>
-                                    <td id="lowest-course-average"></td>
-                                </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>

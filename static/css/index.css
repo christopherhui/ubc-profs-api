@@ -43,6 +43,11 @@
     margin: 0;
 }
 
+.btn-custom {
+    background-color: #717384;
+    border-color: #6b6d7d;
+}
+
 #search-prof-form {
     padding: 0.75em 1.25rem;
 }

@@ -52,3 +52,7 @@ def courses():
 @app.route('/date')
 def date():
     return flask.render_template('date.html')
+
+@app.route('/course-comparator')
+def course_comparator():
+    return flask.render_template('course-selector.html')

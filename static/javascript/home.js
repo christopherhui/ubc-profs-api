@@ -1,5 +1,7 @@
 var ctx = document.getElementById('generalStats');
 var stats = null;
+var done = false;
+var fuse = null;
 
 var myChart = new Chart(ctx, {
     type: 'bar',
@@ -64,25 +66,49 @@ function addProfData(chart, data) {
     chart.update();
 }
 
+function reverse(prof) {
+    prof = formatProfName(prof);
+    prof = prof.split('-').reverse().join(' ');
+    return prof;
+}
+
 document.getElementById("search-input-prof").onkeydown = function findResults() {
-    const xhr = new XMLHttpRequest();
     const profInput = document.getElementById("search-input-prof").value;
-    const theUrl = "/api/professors";
     $('#result').empty();
     $('.search-status').empty();
 
-    if (profInput.length >= 2) {
-        xhr.onload = function () {
-            const profsResult = xhr.responseText ? JSON.parse(xhr.responseText) : [];
+    if (profInput.length >= 2 && !done) {
+        done = true;
+        let submit = $.ajax({
+            type: 'GET',
+            url: '/api/professors'
+        });
+
+        submit.done(function gotProfs(profs) {
+
+            var searchProfs = profs.map(prof => ({'name': prof, 'name_cut': formatProfName(prof).split('-').join(' '), 'name_backwards': reverse(prof)}));
+            var options = {
+                shouldSort: true,
+                keys: [{name: 'name_cut', weight: 0.3}, {name: 'name_backwards', weight: 0.7}],
+                id: 'name'
+            };
+            fuse = new Fuse(searchProfs, options);
+            const profsResult = fuse.search(profInput).slice(0, 5);
 
             for (let prof of profsResult) {
                 $('#result').append('<li class="list-group-item link-class" id="prof-name">' + prof);
             }
-        };
+        });
 
-        xhr.open("POST", theUrl);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send(JSON.stringify({"prof": document.getElementById("search-input-prof").value}));
+        submit.fail(function noProfs(err) {
+            console.log('No profs found');
+        });
+    } else if (profInput.length >= 2) {
+        const profsResult = fuse.search(profInput).slice(0, 5);
+
+        for (let prof of profsResult) {
+            $('#result').append('<li class="list-group-item link-class" id="prof-name">' + prof);
+        }
     }
 };
 
