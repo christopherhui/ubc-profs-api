@@ -4,51 +4,20 @@ var ctx = document.getElementById('profCompare');
 var myChartCompartor = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: [],
-        datasets: [{
-            label: 'Average',
-            data: [],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)'
-            ],
-            borderWidth: 1
-        }]
+        labels: ['Average', 'Standard Deviation', 'Years Taught', 'Students Taught (Hundreds)'],
+        datasets: []
     },
     options: {
         responsive: true,
         maintainAspectRatio: true,
         scales: {
+            xAxes: [{
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 0,
+                    minRotation: 0
+                }
+            }],
             yAxes: [{
                 ticks: {
                     beginAtZero: true
@@ -119,26 +88,71 @@ function compare() {
     $.each($(".instructor-picker option:selected"), function () {
         instructorsSelected.push($(this).val());
     });
+    myChartCompartor.data.datasets = [];
 
     let maxAvg = 0;
     let avgInst = '';
-    let lowStdev = 0;
+    let lowStdev = 1000;
     let stdevInst = '';
     let maxYears = 0;
     let yearsInst = '';
     let maxStud = 0;
     let studInst = '';
 
-    myChartCompartor.data.labels = instructorsSelected;
-
     for (let instructor of instructorsSelected) {
+        instructor = formatProfName(instructor);
+
         const submit = $.ajax({
             type: 'GET',
             url: `/api/general-stats-verbose/${instructor}/${subject}/${course}`
         });
 
-        submit.done({
+        submit.done(function foundStats(res) {
+            const name = res['stats']['name'];
+            const average = res['all']['average'].toFixed(2);
+            const stdev = res['all']['stdev'].toFixed(2);
+            const years = res['stats']['all']['years_taught'].length;
+            const stud = res['stats']['all']['count'];
+            myChartCompartor.data.datasets.push({
+                label: name,
+                data: [average, stdev, years, stud / 100],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                ],
+                borderWidth: 1
+            });
+            myChartCompartor.update();
 
+            if (parseFloat(average) > parseFloat(maxAvg)) {
+                maxAvg = average;
+                avgInst = name;
+            }
+            if (parseFloat(stdev) < parseFloat(lowStdev)) {
+                lowStdev = stdev;
+                stdevInst = name;
+            }
+            if (years > maxYears) {
+                maxYears = years;
+                yearsInst = name;
+            }
+            if (stud > maxStud) {
+                maxStud = stud;
+                studInst = name;
+            }
+
+            $('#high-avg').text(`${maxAvg} (${avgInst})`);
+            $('#low-stdev').text(`${lowStdev} (${stdevInst})`);
+            $('#high-year').text(`${maxYears} (${yearsInst})`);
+            $('#high-stud').text(`${maxStud} (${studInst})`);
         });
 
         submit.fail(function (err) {
