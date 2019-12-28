@@ -5,7 +5,6 @@ import statistics
 from collections import OrderedDict
 
 from flask import jsonify
-from api import app
 
 stats_cat = ['average', 'stdev', 'high', 'low', 'passed', 'fail', 'withdrew', 'audit', 'other']
 grades_cat = {'g0to9': '0-9%', 'g10to19': '10-19%', 'g20to29': '20-29%', 'g30to39': '30-39%', 'g40to49': '40-49%','gless50': '<50%', 'g50to54': '50-54%', 'g55to59': '55-59%', 'g60to63': '60-63%', 'g64to67': '64-67%','g68to71': '68-71%', 'g72to75': '72-75%', 'g76to79': '76-79%', 'g80to84': '80-84%', 'g85to89': '85-89%','g90to100': '90-100%'}
@@ -20,6 +19,7 @@ def find_name(professor):
     :param professor: name of professor in dash form
     :return: name of professor used for querying database and '' if not found
     """
+    from api import app
     name = professor.split('-')
     query = 'SELECT name FROM professor WHERE name LIKE ?;'
 
@@ -38,6 +38,7 @@ def result_to_json(cursor, row):
 
     :return: json version of results
     """
+    from api import app
     d = {}
     d['grades'] = {}
     d['stats'] = {}
@@ -66,6 +67,7 @@ def general_get(professor, add_query='', *options):
     :param options:
     :return:
     """
+    from api import app
     query = 'SELECT course.*, stats.*, grades.* FROM professor ' \
             'INNER JOIN association ON professor.id = association.professor_id ' \
             'INNER JOIN course ON course.id = association.course_id ' \

@@ -1,7 +1,6 @@
 from flask_restful import Resource
 from flask import jsonify, request
 import sqlite3
-from api import app
 from prof_api.helper_functions import find_name
 
 
@@ -12,6 +11,7 @@ class Course(Resource):
         :param professor: professor's name
         :return: all courses a professor has taught
         """
+        from api import app
         query = 'SELECT DISTINCT course.subject ' \
                 'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
                 'ON course.id = association.course_id ' \
@@ -34,6 +34,7 @@ class Subject(Resource):
         :param subject: specific course (i.e. STAT, ENGL)
         :return: subject of a course (i.e. 100, 320)
         """
+        from api import app
         query = 'SELECT DISTINCT course.course ' \
                 'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
                 'ON course.id = association.course_id ' \
@@ -57,6 +58,7 @@ class Year(Resource):
         :param course:
         :return: all years sessions of when a professor has taught
         """
+        from api import app
         query = 'SELECT DISTINCT course.year_session ' \
                 'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
                 'ON course.id = association.course_id ' \
@@ -81,6 +83,7 @@ class Section(Resource):
         :param year:
         :return: all years sessions of when a professor has taught
         """
+        from api import app
         query = 'SELECT DISTINCT course.section ' \
                 'FROM professor JOIN association ON professor.id = association.professor_id JOIN course ' \
                 'ON course.id = association.course_id ' \
@@ -101,6 +104,7 @@ class Professors(Resource):
 
         :return: list of all professor names
         """
+        from api import app
         query = 'SELECT professor.name FROM professor'
 
         conn = sqlite3.connect(app.config['DATABASE_NAME'])
@@ -115,6 +119,7 @@ class Professors(Resource):
 
         :return: list of all professor names with wildcard guesses, only 5 professors returned maximum
         """
+        from api import app
         prof_name = request.json["prof"]
 
         query = 'SELECT professor.name FROM professor WHERE professor.name LIKE ?' \
@@ -139,6 +144,7 @@ class Professors(Resource):
 
 class SubjectFindCourses(Resource):
     def get(self, subject):
+        from api import app
         query = 'SELECT DISTINCT course.course FROM course WHERE course.subject = ? ' \
                 'ORDER BY course.course;'
 
@@ -152,6 +158,7 @@ class SubjectFindCourses(Resource):
 
 class SubjectCourseProfessor(Resource):
     def get(self, subject, course):
+        from api import app
         query = 'SELECT DISTINCT professor.name FROM professor ' \
                 'INNER JOIN association ON professor.id = association.professor_id ' \
                 'INNER JOIN course ON course.id = association.course_id ' \
