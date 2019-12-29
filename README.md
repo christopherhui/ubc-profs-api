@@ -19,5 +19,5 @@ Start the web app by executing the file `prof_stats.py`
 ```bash
 # Use either python or python3, whichever coresponds to Python 3 on your machine
 # Starts a development server. Do not use in production.
-python3 prof_stats.py
+python3 api.py
 ```
