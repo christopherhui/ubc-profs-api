@@ -87,21 +87,20 @@ def general_get(professor, add_query='', *options):
     return jsonify(results)
 
 
-def calculate_all_to_json(all_arr, all_std, d, pass_ratio_all):
+def calculate_all_to_json(all_arr, all_std, d, pass_ratio_all, count):
     if len(all_arr) > 0:
         d['all']['average'] = statistics.mean(all_arr) if len(all_arr) >= 2 else all_arr[0]
         d['all']['stdev'] = math.sqrt(sum(all_std))/len(all_std) if len(all_std) >= 2 else math.sqrt(all_std[0])
         d['all']['median'] = statistics.median(all_arr) if len(all_arr) >= 2 else all_arr[0]
-        d['all']['pass'] = statistics.mean(pass_ratio_all) if len(all_arr) >= 2 else pass_ratio_all[0]
+        d['all']['pass'] = pass_ratio_all/count
 
 
-def calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr, undergrad_std):
+def calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr, undergrad_std, count):
     if len(undergrad_arr) > 0:
         d['undergrad']['average'] = statistics.mean(undergrad_arr) if len(undergrad_arr) >= 2 else undergrad_arr[0]
         d['undergrad']['stdev'] = math.sqrt(sum(undergrad_std))/len(undergrad_std) if len(undergrad_std) >= 2 else math.sqrt(undergrad_std[0])
         d['undergrad']['median'] = statistics.median(undergrad_arr) if len(undergrad_arr) >= 2 else undergrad_arr[0]
-        d['undergrad']['pass'] = statistics.mean(pass_ratio_undergrad) if len(undergrad_arr) >= 2 else \
-        pass_ratio_undergrad[0]
+        d['undergrad']['pass'] = pass_ratio_undergrad/count
 
 
 def add_grade_values(course_no, d, grades):
@@ -255,13 +254,15 @@ def convert_to_general_overall(json_query):
         }
     }
 
-    pass_ratio_undergrad = []
+    pass_ratio_undergrad = 0
     undergrad_arr = []
     undergrad_std = []
+    count_undergrad = 0
 
-    pass_ratio_all = []
+    pass_ratio_all = 0
     all_arr = []
     all_std = []
+    count_all = 0
 
     for query in json_query:
         grades = query['grades']
@@ -283,14 +284,16 @@ def convert_to_general_overall(json_query):
         if course_no < 500:
             undergrad_arr.append(stats['average'])
             undergrad_std.append(stats['stdev'] ** 2)
-            pass_ratio_undergrad.append(stats['pass'] / (stats['pass'] + stats['fail']))
+            pass_ratio_undergrad += stats['pass']
+            count_undergrad += (stats['pass'] + stats['fail'])
 
         all_arr.append(stats['average'])
         all_std.append(stats['stdev'] ** 2)
-        pass_ratio_all.append(stats['pass'] / (stats['pass'] + stats['fail']))
+        pass_ratio_all += stats['pass']
+        count_all += (stats['pass'] + stats['fail'])
 
-    calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr, undergrad_std)
-    calculate_all_to_json(all_arr, all_std, d, pass_ratio_all)
+    calculate_undergrad_to_json(d, pass_ratio_undergrad, undergrad_arr, undergrad_std, count_undergrad)
+    calculate_all_to_json(all_arr, all_std, d, pass_ratio_all, count_all)
 
     return d
 
