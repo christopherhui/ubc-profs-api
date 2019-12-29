@@ -131,3 +131,6 @@ dmypy.json
 !.vscode/launch.json
 !.vscode/extensions.json
 /db.sqlite
+
+# WSGI file
+*.wsgi

@@ -1,0 +1,17 @@
+<VirtualHost *:80>
+		ServerName ubcprofs.com
+		ServerAlias www.ubcprofs.com
+		WSGIScriptAlias / /var/www/FlaskApp/ubc-profs-api/ubc-profs-api.wsgi
+		<Directory /var/www/FlaskApp/ubc-profs-api/>
+			Order allow,deny
+			Allow from all
+		</Directory>
+		Alias /static /var/www/FlaskApp/ubc-profs-api/static
+		<Directory /var/www/FlaskApp/ubc-profs-api/static/>
+			Order allow,deny
+			Allow from all
+		</Directory>
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		LogLevel warn
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
