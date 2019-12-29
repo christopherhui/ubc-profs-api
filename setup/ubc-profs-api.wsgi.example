@@ -1,0 +1,13 @@
+#!/usr/bin/python3
+
+# Put this file at the root of the repository after removing the .example extension
+
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/FlaskApp/ubc-profs-api")
+
+from api import app as application
+application.secret_key = 'DON\'T FORGET TO CHANGE THIS!'
+
+
